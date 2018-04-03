@@ -1,0 +1,114 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font-size: 16px;
+    list-style: none;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-decoration: none;
+    outline: none;
+}
+
+body {
+    background: #e1e1e1;
+    font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB",STHeiti,sans-serif!important;
+    word-break: break-word;
+    color: #333;
+}
+
+.navBar {
+    margin-bottom: 0;
+    width: 100%;
+    height: 54px;
+    position: relative;
+    background: #444;
+    overflow: visible;
+}
+
+.navBar:after{
+    clear:both;
+}
+
+.navBar-inner {
+    background: 0 0;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    width: 90%;
+    margin: auto;
+    padding: 5px;
+    min-height: 40px;
+}
+
+.navBar .container {
+    width: 100%;
+    min-width: 960px;
+    margin: 0 auto;
+    max-width: 1400px;
+}
+
+.navBar .brand {
+    width: 180px;
+    padding: 3px 20px;
+    height: 38px;
+    display: block;
+    float: left;
+    margin-left: -20px;
+    font-size: 20px;
+    font-weight: 200;
+    color: #777;
+    text-shadow: 0 1px 0 #fff;
+}
+
+
+.navBar .navBar-search {
+    margin-top: 6px;
+    float: left;
+    position: relative;
+}
+
+
+.navBar-search .search-query {
+    padding: 4px 14px;
+    margin-bottom: 0;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+
+.navBar .search-query {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    background: url(/res/img/topSearch.png) no-repeat #888;
+    background-position: right;
+    padding: 3px 22px 3px 5px;
+    color: #666;
+    border: 0;
+    margin-top: 2px;
+    transition: all .5s
+}
+
+.navBar-search .search-query, button, input, select, textarea {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+input.search-query {
+    margin-bottom: 0;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    width: 206px;
+    float: none;
+    margin-left: 0;
+    display: inline-block;
+    height: 26px;
+}
+
+.navBar .search-query.focused,.navBar .search-query:focus,.navBar .search-query:hover {
+	background-color: #fff
+}

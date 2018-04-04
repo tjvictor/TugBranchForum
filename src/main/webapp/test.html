@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="res/js/jquery-1.11.2.js"></script>
+    <link rel="stylesheet" type="text/css" href="res/kindeditor/themes/default/default.css">
+    <script charset="utf-8" type="text/javascript" src="res/kindeditor/kindeditor-all-min.js"></script>
+    <script charset="utf-8" type="text/javascript" src="res/kindeditor/lang/zh-CN.js"></script>
+    <script type="text/javascript" src="res/js/js.cookie.js"></script>
+    <script type="text/javascript" src="res/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="res/kindeditor/plugins/singleimg/singleimg.js"></script>
+    <script>
+        var notifyKindeditor;
+        $(function (){
+            notifyKindeditor = KindEditor.create('#testing', {
+                items : ['singlefile','singlevideo', 'singleaudio','singleimg'],
+            });
+        });
+
+        function kindeditorFileUploading(fileElementId, kindeditorId, fileType) {
+            $.ajaxFileUpload({
+                url: '/websiteService/fileUpload/' + fileElementId + '/' + fileType,
+                secureuri: false,
+                dataType: 'json',
+                fileElementId: fileElementId,
+                success: function(data, status) {
+                    if (data.status == "ok") {
+                        if(kindeditorId){
+                            if (data.callBackData.fileType == 'image') {
+                                kindeditorId.insertHtml('<p><img src="' + data.callBackData.fileUrl + '" style="max-width:100%" /></p>');
+                            } else if (data.callBackData.fileType == 'audio') {
+                                kindeditorId.insertHtml('<p><audio src="' + data.callBackData.fileUrl + '" style="max-width:100%" controls="controls" style="max-width:100%;max-height:100%;">您的浏览器不支持此音频，请使用Chrome浏览观看</audio></p>');
+                            } else if (data.callBackData.fileType == 'video') {
+                                kindeditorId.insertHtml('<p><video src="' + data.callBackData.fileUrl + '" style="max-width:100%" controls="controls" style="max-width:100%;max-height:100%;">您的浏览器不支持此视频，请使用Chrome浏览观看</video></p>');
+                            } else if (data.callBackData.fileType == 'file') {
+                                kindeditorId.insertHtml('<a class="ke-insertfile" href="' + data.callBackData.fileUrl + '" target="_blank">' + data.callBackData.fileName +'</a>');
+                            }
+
+                        }
+                    }
+                },
+                error: function(data, status, e) {
+                    alert(e);
+                },
+                complete: function(data) {
+                    $('#' + fileElementId).val('');
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <textarea id="testing" name="testing" style="width:100%"></textarea>
+    <input id="singlefileInput" type="file" name="singlefileInput" onchange="kindeditorFileUploading('singlefileInput', notifyKindeditor, 'file');" style="display:none;">
+    <input id="singleimgInput" type="file" name="singleimgInput" onchange="kindeditorFileUploading('singleimgInput', notifyKindeditor, 'image');" style="display:none;">
+    <input id="singlevideoInput" type="file" name="singlevideoInput" onchange="kindeditorFileUploading('singlevideoInput', notifyKindeditor, 'video');" style="display:none;">
+    <input id="singleaudioInput" type="file" name="singleaudioInput" onchange="kindeditorFileUploading('singleaudioInput', notifyKindeditor, 'audio');" style="display:none;">
+</body>
+</html>

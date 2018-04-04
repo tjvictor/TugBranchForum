@@ -1144,4 +1144,24 @@
 	width: 30%;
 	text-align: center;
 }
+.ke-icon-singlefile{
+    background-image: url('singlefile.png');
+	width: 16px;
+	height: 16px;
+}
+.ke-icon-singleimg{
+    background-image: url('singleimg.png');
+	width: 16px;
+	height: 16px;
+}
+.ke-icon-singleaudio{
+    background-image: url('singleaudio.png');
+	width: 16px;
+	height: 16px;
+}
+.ke-icon-singlevideo{
+    background-image: url('singlevideo.png');
+	width: 16px;
+	height: 16px;
+}
 

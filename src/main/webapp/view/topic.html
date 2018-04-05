@@ -2,10 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Topc</title>
-    <script type="text/javascript" src="res/js/jquery-1.11.2.js"></script>
-    <link rel="stylesheet" type="text/css" href="res/css/webDefault.css">
-    <script type="text/javascript" src="res/js/vue.js"></script>
+    <title>Topic</title>
+    <link rel="icon" href="../res/img/favicon.png" type=" image/png" >
+    <script type="text/javascript" src="../res/js/jquery-1.11.2.js"></script>
+    <link rel="stylesheet" type="text/css" href="../res/css/webDefault.css">
+    <link rel="stylesheet" type="text/css" href="res/kindeditor/themes/default/default.css">
+    <script charset="utf-8" type="text/javascript" src="../res/kindeditor/kindeditor-all-min.js"></script>
+    <script charset="utf-8" type="text/javascript" src="../res/kindeditor/lang/zh-CN.js"></script>
+    <script type="text/javascript" src="../res/js/js.cookie.js"></script>
+    <script type="text/javascript" src="../res/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../res/kindeditor/plugins/singleimg/singleimg.js"></script>
+    <script type="text/javascript" src="../res/kindeditor/plugins/singlefile/singlefile.js"></script>
+    <script type="text/javascript" src="../res/js/topic.js"></script>
+    <script>
+        $(function (){
+            initTopicKindeditor();
+        });
+    </script>
 </head>
 <body>
 <div class="navBar">
@@ -42,29 +55,83 @@
     <div class="main-leftPanel">
         <div id="topic-body">
             <div class="main-panel-header">
-
+                <div>
+                    <span style="color:#000000;font-weight:700;font-size:2em">区块链开发入门书籍和文档</span>
+                    <span style="background-color:grey; padding:2px 6px 2px 4px; border-radius:3px;color:#fff;font-size:14px;">分类</span>
+                    <span style="background-color:blue; padding:2px 6px 2px 4px; border-radius:3px;color:#fff;font-size:14px;">置顶</span>
+                    <span style="background-color:purple; padding:2px 6px 2px 4px; border-radius:3px;color:#fff;font-size:14px;">申精</span>
+                    <span style="background-color:#80bd01; padding:2px 6px 2px 4px; border-radius:3px;color:#fff;font-size:14px;">已解决</span>
+                    <span style="background-color:red; padding:2px 6px 2px 4px; border-radius:3px;color:#fff;font-size:14px;">待解决</span>
+                </div>
+                <div style="margin-top:10px;">
+                    <span style="color:#888;font-size:14px;">发布于 1 年前</span>
+                    <span style="color:#888;font-size:14px;margin-left:10px;">作者 maiiz</span>
+                    <span style="color:#888;font-size:14px;margin-left:10px;">36675 次浏览</span>
+                </div>
             </div>
-            <div class="main-panel-body" style="padding:0;">
+            <div class="main-panel-body" style="padding:10;">
                 <div style="margin:0px; border-radius: 0 0 3px 3px;">
-
-
+                    <p>如何使用web3js 进行以太币转账?
+                        我使用<strong>sendTransaction</strong>后能通过<strong>getTransaction</strong>查询到信息,但是在<a href="https://etherscan.io" target="_blank">etherscan.io</a>没有任何信息,
+                        代码如下 (星号* 部分为手动打码,并非乱码)</p>
+                    <pre class="prettyprint language-js"><code><span class="pln">	</span><span class="kwd">var</span><span class="pln"> t </span><span class="pun">=</span><span class="pln"> web3</span><span class="pun">.</span><span class="pln">eth</span><span class="pun">.</span><span class="pln">sendTransaction</span><span class="pun">({</span><span class="pln">
+	  from</span><span class="pun">:</span><span class="str">'0xa********************'</span><span class="pun">,</span><span class="pln">
+	  to</span><span class="pun">:</span><span class="str">'0xb********************'</span><span class="pun">,</span><span class="pln">
+	  value</span><span class="pun">:</span><span class="lit">100</span><span class="pln">
+ 	</span><span class="pun">});</span><span class="pln">
+	web3</span><span class="pun">.</span><span class="pln">eth</span><span class="pun">.</span><span class="pln">getTransaction</span><span class="pun">(</span><span class="pln">t</span><span class="pun">);</span></code></pre><p>输出如下:</p>
+                    <pre class="prettyprint"><code><span class="pln">	</span><span class="pun">{</span><span class="pln"> blockHash</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">,</span><span class="pln">
+	blockNumber</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">,</span><span class="pln">
+	chainId</span><span class="pun">:</span><span class="pln"> </span><span class="str">'0x1'</span><span class="pun">,</span><span class="pln">
+	condition</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> block</span><span class="pun">:</span><span class="pln"> </span><span class="lit">5358662</span><span class="pln"> </span><span class="pun">},</span><span class="pln">
+	creates</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">,</span><span class="pln">
+	</span><span class="kwd">from</span><span class="pun">:</span><span class="pln"> </span><span class="str">'0xa********************'</span><span class="pun">,</span><span class="str">',
+	gas: 940000,
+	gasPrice: BigNumber { s: 1, e: 9, c: [ 3000000000 ] },
+	hash: '</span><span class="lit">0x7</span><span class="pun">********************</span><span class="pln">dd</span><span class="str">',
+	input: '</span><span class="lit">0x</span><span class="str">',
+	nonce: 779,
+	publicKey: '</span><span class="lit">0x3</span><span class="pun">*****************************</span><span class="pln">c002d</span><span class="str">',
+	r: '</span><span class="lit">0xeba9</span><span class="pun">**********************************</span><span class="pln">c5</span><span class="str">',
+	raw: '</span><span class="lit">0xf86</span><span class="pun">***********************************************************</span><span class="pln">fe1e1a</span><span class="str">',
+	s: '</span><span class="lit">0x716</span><span class="pun">**********************************************</span><span class="lit">1e1a</span><span class="str">',
+	standardV: '</span><span class="lit">0x0</span><span class="str">',
+	to: '</span><span class="lit">0xb</span><span class="pun">*************************</span><span class="str">',
+	transactionIndex: null,
+	v: '</span><span class="lit">0x25</span><span class="str">',
+	value: BigNumber { s: 1, e: 2, c: [ 100 ] } }</span></code></pre><p>使用的是<strong>Parity</strong></p>
                 </div>
             </div>
         </div>
-        <div id="reply-topic-body">
+
+        <div id="reply-topic-body" style="margin-top:10px;">
             <div class="main-panel-header">
-
+                <span style="font-size:14px;">3 回复</span>
             </div>
-            <div class="main-panel-body" style="padding:0;">
-                <div style="margin:0px; border-radius: 0 0 3px 3px;">
-
-
+            <div class="main-panel-body" style="padding:10;">
+                <div>
+                    <div class="left" style="width:48px;height:48px;background-image:url('../res/img/professor_48.png');position:absolute;"></div>
+                    <div style="margin-left:60px;">
+                        <div>
+                            <div class="left">路人-戊</div>
+                            <div class="right">1楼•3 天前</div>
+                            <div class="clear"></div>
+                        </div>
+                        <hr style="margin:5px 0px;">
+                        <div style="margin: 20px 0px;">看样子好像是没打包，你直接在console里面看下最近实现过类似的功能。应该和楼主自己实现的差不多把。如果是以太坊的账户转账，用getBlock拿。如果是代币的话，用getLogs，把address和topic[0]，fromBlock,toBlock设置在过滤器里。周期遍历一下。</div>
+                    </div>
+                    <div class="clear"></div>
                 </div>
             </div>
         </div>
-        <div id="reply-body">
+
+        <div id="reply-body" style="margin-top:10px;">
+            <div class="main-panel-header">
+                <input type="button" value="提交回复" onclick="" style="font-size:14px;width:100px;background-color:#0C6EAB;color:white;border-radius:5px;height:30px;cursor: pointer;">
+            </div>
+
             <div class="main-panel-body" style="padding:0;">
-                <textarea id="replyKindeditor" name="replyKindeditor" style="width:100%;"></textarea>
+                <textarea id="replyTxt" name="replyTxt" style="width:100%;"></textarea>
             </div>
         </div>
     </div>

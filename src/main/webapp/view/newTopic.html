@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Topic</title>
+    <link rel="icon" href="../res/img/favicon.png" type=" image/png" >
+    <script type="text/javascript" src="../res/js/jquery-1.11.2.js"></script>
+    <link rel="stylesheet" type="text/css" href="../res/css/webDefault.css">
+    <link rel="stylesheet" type="text/css" href="res/kindeditor/themes/default/default.css">
+    <script charset="utf-8" type="text/javascript" src="../res/kindeditor/kindeditor-all-min.js"></script>
+    <script charset="utf-8" type="text/javascript" src="../res/kindeditor/lang/zh-CN.js"></script>
+    <script type="text/javascript" src="../res/js/js.cookie.js"></script>
+    <script type="text/javascript" src="../res/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="../res/kindeditor/plugins/singleimg/singleimg.js"></script>
+    <script type="text/javascript" src="../res/kindeditor/plugins/singlefile/singlefile.js"></script>
+    <script type="text/javascript" src="../res/js/topic.js"></script>
+    <script>
+        $(function (){
+            initTopicKindeditor('600');
+        });
+    </script>
+</head>
+<body>
+<div class="navBar">
+    <div class="navBar-inner">
+        <div class="container">
+            <a class="brand" href="/">
+                <img src="/public/images/logo.png">
+            </a>
+            <div id="search_form" class="navBar-search">
+                <input type="text" id="q" name="q" class="search-query left" value="">
+                <div class="navBar-searchBtn left"></div>
+            </div>
+            <ul class="nav pull-right">
+                <li><a href="/">首页</a></li>
+                <li><a href="/about" target="">关于</a></li>
+                <li><a href="/signup">注册</a></li>
+                <li><a href="/signin">登录</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="main">
+    <div class="main-rightPanel">
+        <div class="main-panel-header">
+            <span>Notification</span>
+        </div>
+        <div class="main-panel-body">
+            <p>欢迎访问 区块链技术中文社区</p>
+            <p>社区发言请遵循 相关规则</p>
+            <p>区块链技术交流群 147086480</p>
+        </div>
+    </div>
+    <div class="main-leftPanel">
+        <div id="reply-body" style="margin-top:10px;">
+            <div class="main-panel-header">
+                <span>标题: </span>
+                <input type="text" style="font-size:14px;width:500px;border-radius:5px;height:30px;margin:0px 10px;">
+                <span>分类: </span>
+                <select style="width:200px;margin-left:10px;border-radius:5px;height:30px;font-size:14px;">
+                    <option value="e1f1bdce-b66c-4eb4-9877-4f26f1c00001">拖轮管理</option>
+                    <option value="e1f1bdce-b66c-4eb4-9877-4f26f1c00002">港口作业</option>
+                    <option value="e1f1bdce-b66c-4eb4-9877-4f26f1c00003">安全技术</option>
+                    <option value="e1f1bdce-b66c-4eb4-9877-4f26f1c00004">其它</option>
+                </select>
+            </div>
+
+            <div class="main-panel-body" style="padding:0;">
+                <textarea id="replyTxt" name="replyTxt" style="width:100%;"></textarea>
+            </div>
+
+            <div class="main-panel-header">
+                <input type="button" value="提交" onclick="" style="font-size:14px;width:100px;background-color:#0C6EAB;color:white;border-radius:5px;height:30px;cursor: pointer;">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="foot" style="bottom:0px;position:absolute;width:100%;">
+    <div class="foot-main">
+        <p>
+            Bitshuo 国内最为专业的区块链技术开源社区，致力于区块链技术的研究、分享和普及
+        </p>
+    </div>
+</div>
+</body>
+</html>

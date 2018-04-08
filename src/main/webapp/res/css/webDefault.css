@@ -58,6 +58,10 @@ body {
     max-width: 1400px;
 }
 
+.navBar .navBar-inner .container ul li ul{position:absolute; display:none; background-color:#434343;z-index:100;}
+.navBar .navBar-inner .container ul li:hover ul{display:block;}
+.navBar .navBar-inner .container ul li ul li { float:none; width:100%; }
+
 .navBar .brand {
     width: 180px;
     padding: 3px 20px;
@@ -156,6 +160,21 @@ input.search-query {
     text-decoration:none;
     background-color:transparent
 }
+
+.navBar .nav>li>ul>li>a {
+    text-shadow: none;
+    color: #ccc;
+    float: none;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+}
+.navBar .nav>li>ul>li>a:focus,.navBar .nav>li>ul>li>a:hover{
+    color:#3f82c4;
+    text-decoration:none;
+    background-color:transparent
+}
+
 .navBar .nav>.active>a,.navBar .nav>.active>a:focus,.navBar .nav>.active>a:hover{
     color:#555;
     text-decoration:none;

@@ -5,17 +5,21 @@
     <title>Title</title>
     <script type="text/javascript" src="res/js/jquery-1.11.2.js"></script>
     <link rel="stylesheet" type="text/css" href="res/kindeditor/themes/default/default.css">
+    <link rel="stylesheet" type="text/css" href="res/pagination/pagination.css">
     <script charset="utf-8" type="text/javascript" src="res/kindeditor/kindeditor-all-min.js"></script>
     <script charset="utf-8" type="text/javascript" src="res/kindeditor/lang/zh-CN.js"></script>
     <script type="text/javascript" src="res/js/js.cookie.js"></script>
     <script type="text/javascript" src="res/js/ajaxfileupload.js"></script>
     <script type="text/javascript" src="res/kindeditor/plugins/singleimg/singleimg.js"></script>
+    <script type="text/javascript" src="res/pagination/pagination.js"></script>
     <script>
         var notifyKindeditor;
         $(function (){
             notifyKindeditor = KindEditor.create('#testing', {
                 items : ['singlefile','singlevideo', 'singleaudio','singleimg'],
             });
+
+            createPagination(1, 10, 273, selectPageFunction);
         });
 
         function kindeditorFileUploading(fileElementId, kindeditorId, fileType) {
@@ -48,6 +52,10 @@
                 }
             });
         }
+
+        function selectPageFunction(a, b){
+            alert(a);
+        }
     </script>
 </head>
 <body>
@@ -56,5 +64,6 @@
     <input id="singleimgInput" type="file" name="singleimgInput" onchange="kindeditorFileUploading('singleimgInput', notifyKindeditor, 'image');" style="display:none;">
     <input id="singlevideoInput" type="file" name="singlevideoInput" onchange="kindeditorFileUploading('singlevideoInput', notifyKindeditor, 'video');" style="display:none;">
     <input id="singleaudioInput" type="file" name="singleaudioInput" onchange="kindeditorFileUploading('singleaudioInput', notifyKindeditor, 'audio');" style="display:none;">
+    <div class="pagination"></div>
 </body>
 </html>

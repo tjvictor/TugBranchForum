@@ -5,7 +5,7 @@ import java.io.File;
 
 public class Test {
     public static void main(String[] args) {
-        File file = new File("D:\\迅雷下载\\Download\\");
+        /*File file = new File("D:\\迅雷下载\\Download\\");
         for(File item : file.listFiles()){
 
             if(item.getName().length()<8){
@@ -16,6 +16,7 @@ public class Test {
                     item.renameTo(newFile);
                 }
             }
-        }
+        }*/
+
     }
 }

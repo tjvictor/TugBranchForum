@@ -6,7 +6,15 @@
     <link rel="icon" href="res/img/favicon.png" type=" image/png" >
     <script type="text/javascript" src="res/js/jquery-1.11.2.js"></script>
     <link rel="stylesheet" type="text/css" href="res/css/webDefault.css">
+    <link rel="stylesheet" type="text/css" href="res/pagination/pagination.css">
     <script type="text/javascript" src="res/js/vue.js"></script>
+    <script type="text/javascript" src="res/pagination/pagination.js"></script>
+    <script type="text/javascript" src="res/js/webCommon.js"></script>
+    <script>
+        $(function (){
+            createPagination(1, 10, 273, selectPageFunction);
+        });
+    </script>
 </head>
 <body>
 <div class="navBar">
@@ -26,7 +34,7 @@
                 <li><a href="/signin">登录</a></li>
                 <li><a style="cursor:pointer;">我的信息</a>
                     <ul>
-                        <li><a href="#">发布新贴</a></li>
+                        <li><a href="/view/newTopic.html">发布新贴</a></li>
                         <li><a href="#">个人信息</a></li>
                         <li><a href="#">个人主页</a></li>
                         <li><a href="#">退出</a></li>
@@ -36,10 +44,11 @@
         </div>
     </div>
 </div>
+
 <div class="main">
     <div class="main-rightPanel">
         <div class="main-panel-header">
-            <span>Notification</span>
+            <span>通知</span>
         </div>
         <div class="main-panel-body">
             <p>欢迎访问 区块链技术中文社区</p>
@@ -89,12 +98,12 @@
                 <div class="main-panel-body-cell">asdfasdfasdf</div>
                 <div class="main-panel-body-cell">asdfasdfasdf</div>
                 <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
+                <div class="pagination"></div>
             </div>
         </div>
     </div>
-
 </div>
+
 <div class="foot">
     <div class="foot-main">
         <p>

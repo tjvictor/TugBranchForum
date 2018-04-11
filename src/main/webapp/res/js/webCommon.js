@@ -44,6 +44,58 @@ function callAjax(url, iTarget, iCallBack, iCallBackParam, iPost, iParams, iLoad
     });
 }
 
+var user;
+function checkUser() {
+    if (Cookies.get("user")) {
+        user = jQuery.parseJSON(Cookies.get("user"));
+    }
+    if (!user) {
+        window.location = 'login.html';
+        return false;
+    } else {
+        if (user.roleName != '超级管理员') $('#managePage').css('display', 'none');
+        Cookies.set("user", user, {
+            expires: 1
+        });
+    }
+    return true;
+}
+
+function login() {
+    var sid = $('#userNameTxt').val();
+    var password = $('#passwordTxt').val();
+    if (sid == '' || password == '')
+        $('#reminderTxt').text('用户名或密码不可以为空');
+    else{
+        var parameter = 'sid='+sid+'&password='+password
+        callAjax('/websiteService/login', '', 'loginCallback', '', '', parameter, '');
+    }
+}
+
+function loginCallback(data){
+    if (data.status == "ok") {
+        var user = {
+            "id" : data.callBackData.id,
+            "sid": data.callBackData.sid,
+            "name" : data.callBackData.name,
+            "companyId" : data.callBackData.companyId,
+            "companyName" : data.callBackData.companyName,
+            "roleId": data.callBackData.roleId,
+            "roleName": data.callBackData.roleName,
+        }
+        Cookies.set("user", user, { expires: 1 });
+        window.location = '/index.html';
+    }else{
+        $('#reminderTxt').text(data.prompt);
+    }
+
+}
+
+function logout(){
+    Cookies.remove("user");
+    callAjax('/websiteService/logout', '', '', '', '', '', '', false);
+}
+
 function selectPageFunction(){
 
 }

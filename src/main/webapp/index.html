@@ -7,12 +7,14 @@
     <script type="text/javascript" src="res/js/jquery-1.11.2.js"></script>
     <link rel="stylesheet" type="text/css" href="res/css/webDefault.css">
     <link rel="stylesheet" type="text/css" href="res/pagination/pagination.css">
-    <script type="text/javascript" src="res/js/vue.js"></script>
     <script type="text/javascript" src="res/pagination/pagination.js"></script>
+    <script type="text/javascript" src="../res/js/js.cookie.js"></script>
     <script type="text/javascript" src="res/js/webCommon.js"></script>
     <script>
         $(function (){
-            createPagination(1, 10, 273, selectPageFunction);
+            if(checkUser()){
+                createPagination('pagination', 1, 10, 273, selectPageFunction);
+            }
         });
     </script>
 </head>
@@ -28,18 +30,17 @@
                 <div class="navBar-searchBtn left"></div>
             </div>
             <ul class="nav pull-right">
-                <li><a href="/">首页</a></li>
-                <li><a href="/about" target="">关于</a></li>
-                <li><a href="/signup">注册</a></li>
-                <li><a href="/signin">登录</a></li>
+                <li><a href="/index.html">首页</a></li>
+                <li><a href="/view/about.html" target="">关于</a></li>
                 <li><a style="cursor:pointer;">我的信息</a>
                     <ul>
                         <li><a href="/view/newTopic.html">发布新贴</a></li>
                         <li><a href="#">个人信息</a></li>
-                        <li><a href="#">个人主页</a></li>
-                        <li><a href="#">退出</a></li>
+                        <li><a href="/view/userHomePage.html">个人主页</a></li>
+                        <li><a href="/login.html" onclick="logout()">退出</a></li>
                     </ul>
                 </li>
+                <li><a id="managePage" href="/manage.html">[管理]</a></li>
             </ul>
         </div>
     </div>
@@ -98,7 +99,7 @@
                 <div class="main-panel-body-cell">asdfasdfasdf</div>
                 <div class="main-panel-body-cell">asdfasdfasdf</div>
                 <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="pagination"></div>
+                <div id = "pagination" class="pagination" style="margin: 10px 0 0 10px;"></div>
             </div>
         </div>
     </div>

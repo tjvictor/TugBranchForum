@@ -14,9 +14,12 @@
     <script type="text/javascript" src="../res/kindeditor/plugins/singleimg/singleimg.js"></script>
     <script type="text/javascript" src="../res/kindeditor/plugins/singlefile/singlefile.js"></script>
     <script type="text/javascript" src="../res/js/topic.js"></script>
+    <script type="text/javascript" src="../res/js/webCommon.js"></script>
     <script>
         $(function (){
-            initTopicKindeditor();
+            if(checkUser()){
+                initTopicKindeditor();
+            }
         });
     </script>
 </head>
@@ -34,8 +37,14 @@
             <ul class="nav pull-right">
                 <li><a href="/">首页</a></li>
                 <li><a href="/about" target="">关于</a></li>
-                <li><a href="/signup">注册</a></li>
-                <li><a href="/signin">登录</a></li>
+                <li><a style="cursor:pointer;">我的信息</a>
+                    <ul>
+                        <li><a href="/view/newTopic.html">发布新贴</a></li>
+                        <li><a href="#">个人信息</a></li>
+                        <li><a href="/view/userHomePage.html">个人主页</a></li>
+                        <li><a href="/login.html" onclick="logout()">退出</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>

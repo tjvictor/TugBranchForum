@@ -19,7 +19,7 @@
                 items : ['singlefile','singlevideo', 'singleaudio','singleimg'],
             });
 
-            createPagination(1, 10, 273, selectPageFunction);
+            createPagination('pagination', 1, 10, 273, selectPageFunction);
         });
 
         function kindeditorFileUploading(fileElementId, kindeditorId, fileType) {
@@ -56,6 +56,13 @@
         function selectPageFunction(a, b){
             alert(a);
         }
+
+        function show(){
+            var a = $('#div1 .div').val();
+            var b = $('#div2 .div').val();
+            alert(a);
+            alert(b);
+        }
     </script>
 </head>
 <body>
@@ -64,6 +71,6 @@
     <input id="singleimgInput" type="file" name="singleimgInput" onchange="kindeditorFileUploading('singleimgInput', notifyKindeditor, 'image');" style="display:none;">
     <input id="singlevideoInput" type="file" name="singlevideoInput" onchange="kindeditorFileUploading('singlevideoInput', notifyKindeditor, 'video');" style="display:none;">
     <input id="singleaudioInput" type="file" name="singleaudioInput" onchange="kindeditorFileUploading('singleaudioInput', notifyKindeditor, 'audio');" style="display:none;">
-    <div class="pagination"></div>
+    <div id="pagination" class="pagination"></div>
 </body>
 </html>

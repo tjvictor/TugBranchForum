@@ -6,7 +6,18 @@
     <link rel="icon" href="../res/img/favicon.png" type=" image/png" >
     <script type="text/javascript" src="../res/js/jquery-1.11.2.js"></script>
     <link rel="stylesheet" type="text/css" href="../res/css/webDefault.css">
+    <link rel="stylesheet" type="text/css" href="../res/pagination/pagination.css">
     <script type="text/javascript" src="../res/js/js.cookie.js"></script>
+    <script type="text/javascript" src="../res/pagination/pagination.js"></script>
+    <script type="text/javascript" src="../res/js/webCommon.js"></script>
+    <script>
+        $(function (){
+            if(checkUser()){
+                createPagination('pagination1', 1, 10, 173, selectPageFunction);
+                createPagination('pagination2', 1, 10, 73, selectPageFunction);
+            }
+        });
+    </script>
 </head>
 <body>
 <div class="navBar">
@@ -22,8 +33,14 @@
             <ul class="nav pull-right">
                 <li><a href="/">首页</a></li>
                 <li><a href="/about" target="">关于</a></li>
-                <li><a href="/signup">注册</a></li>
-                <li><a href="/signin">登录</a></li>
+                <li><a style="cursor:pointer;">我的信息</a>
+                    <ul>
+                        <li><a href="/view/newTopic.html">发布新贴</a></li>
+                        <li><a href="#">个人信息</a></li>
+                        <li><a href="/view/userHomePage.html">个人主页</a></li>
+                        <li><a href="/login.html" onclick="logout()">退出</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -116,6 +133,7 @@
                     <a href="#" style="margin-left:10px;color:#888">区块链开发入门书籍和文档</a>
                     <span class="right" style="color:#888">2018-01-01</span>
                 </div>
+                <div id = "pagination1" class="pagination" style="margin: 10px 0 0 10px;"></div>
             </div>
         </div>
 
@@ -182,6 +200,7 @@
                     <a href="#" style="margin-left:10px;color:#888">区块链开发入门书籍和文档</a>
                     <span class="right" style="color:#888">2018-01-01</span>
                 </div>
+                <div id = "pagination2" class="pagination" style="margin: 10px 0 0 10px;"></div>
             </div>
         </div>
     </div>

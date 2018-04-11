@@ -3,7 +3,7 @@ var replyKindeditor
 function initTopicKindeditor(height) {
     if(!height)
         height = "300";
-    documentKindeditor = KindEditor.create('#replyTxt', {
+    replyKindeditor = KindEditor.create('#replyTxt', {
         items: ['undo', 'redo', '|', 'preview', 'cut', 'copy', 'paste', 'plainpaste', '|', 'justifyleft', 'justifycenter',
                 'justifyright', 'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript', 'superscript',
                 'quickformat', 'selectall', '|', 'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic',

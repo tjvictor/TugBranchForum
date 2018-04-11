@@ -1,15 +1,23 @@
 package tugbranch.forum.reset;
 
+import tugbranch.forum.dao.StaffDao;
 import tugbranch.forum.model.FileUploadEntity;
 import tugbranch.forum.model.ResponseObject;
+import tugbranch.forum.model.Staff;
+import tugbranch.forum.utils.OpsLogTypeEnum;
+import tugbranch.forum.utils.OpsLogUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
@@ -19,6 +27,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -58,6 +67,12 @@ public class webServices {
 
     @Value("${video.MappingUrl}")
     private String videoMappingUrl;
+
+    @Autowired
+    private StaffDao staffDaoImp;
+
+    @Autowired
+    private OpsLogUtils opsLog;
 
     //region file upload
     @PostMapping("/fileUpload/{requestFileName}/{requestFileType}")
@@ -114,5 +129,56 @@ public class webServices {
 
     //region pagination
 
+    //endregion
+
+    //region login
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ResponseObject login(@RequestParam(value = "sid") String sid,
+                                @RequestParam(value = "password") String password) {
+
+        try {
+            Staff item = staffDaoImp.login(sid, password);
+            if (StringUtils.isNotEmpty(item.getSid())) {
+                opsLog.log(sid, OpsLogTypeEnum.Login_out, "登录");
+                return new ResponseObject("ok", "登录成功", item);
+            }
+            else
+                return new ResponseObject("error", "用户不存在或密码错误!", "");
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public void logout(@RequestParam("usid") String usid) {
+        try {
+            opsLog.log(usid, OpsLogTypeEnum.Login_out, "退出");
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
+
+    @RequestMapping(value = "/resetPwd", method = RequestMethod.GET)
+    public ResponseObject resetPwd(@RequestParam(value = "id") String id,
+                                   @RequestParam(value = "oldPwd") String oldPwd,
+                                   @RequestParam(value = "newPwd") String newPwd,
+                                   @RequestParam(value = "usid") String usid) {
+
+        try {
+            Staff item = staffDaoImp.getStaffById(id);
+            if(oldPwd.equals(item.getPassword())){
+                item.setPassword(newPwd);
+                staffDaoImp.updateStaff(item);
+                opsLog.log(usid, OpsLogTypeEnum.ResetPassword, String.format("旧密码: %s, 新密码: %s", oldPwd, newPwd));
+                return new ResponseObject("ok", "密码修改成功", null);
+            }else{
+                return new ResponseObject("error", "原密码不正确", null);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
     //endregion
 }

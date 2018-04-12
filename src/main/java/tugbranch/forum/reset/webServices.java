@@ -1,7 +1,9 @@
 package tugbranch.forum.reset;
 
+import tugbranch.forum.dao.PostCategoryDao;
 import tugbranch.forum.dao.StaffDao;
 import tugbranch.forum.model.FileUploadEntity;
+import tugbranch.forum.model.PostCategory;
 import tugbranch.forum.model.ResponseObject;
 import tugbranch.forum.model.Staff;
 import tugbranch.forum.utils.OpsLogTypeEnum;
@@ -30,6 +32,7 @@ import java.io.OutputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -73,6 +76,9 @@ public class webServices {
 
     @Autowired
     private OpsLogUtils opsLog;
+
+    @Autowired
+    private PostCategoryDao postCategoryDaoImp;
 
     //region file upload
     @PostMapping("/fileUpload/{requestFileName}/{requestFileType}")
@@ -180,5 +186,32 @@ public class webServices {
             return new ResponseObject("error", "系统错误，请联系系统管理员");
         }
     }
+    //endregion
+
+    //region Topic
+    @RequestMapping(value = "/getTopicCategory", method = RequestMethod.GET)
+    public ResponseObject getTopicCategory() {
+        try {
+            List<PostCategory> items = postCategoryDaoImp.getTopicCategory();
+            return new ResponseObject("ok", "查询成功", items);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/getTopicCategory", method = RequestMethod.POST)
+    public ResponseObject addTopic(@RequestParam("title") String title, @RequestParam("content") String content,
+                                   @RequestParam("staffId") String staffId, @RequestParam("categoryId") String categoryId) {
+        try {
+
+
+            return new ResponseObject("ok", "查询成功", items);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
     //endregion
 }

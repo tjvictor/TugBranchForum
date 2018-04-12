@@ -3,7 +3,7 @@ package tugbranch.forum.model;
 public class PostCategory {
     private String id;
     private String name;
-    private int order;
+    private int orders;
 
     public String getId() {
         return id;
@@ -21,11 +21,11 @@ public class PostCategory {
         this.name = name;
     }
 
-    public int getOrder() {
-        return order;
+    public int getOrders() {
+        return orders;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setOrders(int orders) {
+        this.orders = orders;
     }
 }

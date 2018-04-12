@@ -1,8 +1,8 @@
 package tugbranch.forum.model;
 
-public class ReplyPost {
+public class ReplyTopic {
     private String id;
-    private String postId;
+    private String topicId;
     private String content;
     private String staffId;
     private boolean resolved;
@@ -19,12 +19,12 @@ public class ReplyPost {
         this.id = id;
     }
 
-    public String getPostId() {
-        return postId;
+    public String getTopicId() {
+        return topicId;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setTopicId(String topicId) {
+        this.topicId = topicId;
     }
 
     public String getContent() {

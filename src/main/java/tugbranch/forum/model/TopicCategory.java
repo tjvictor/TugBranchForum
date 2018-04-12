@@ -1,6 +1,6 @@
 package tugbranch.forum.model;
 
-public class PostCategory {
+public class TopicCategory {
     private String id;
     private String name;
     private int orders;

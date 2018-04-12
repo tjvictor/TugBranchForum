@@ -2,7 +2,7 @@ package tugbranch.forum.model;
 
 import java.util.List;
 
-public class Post {
+public class Topic {
     private String id;
     private String title;
     private String content;
@@ -10,7 +10,7 @@ public class Post {
     private int viewCount;
     private int replyCount;
     private String categoryId;
-    private String status;
+    private int status;
     private boolean putTop;
     private boolean resolved;
     private boolean essence;
@@ -18,7 +18,7 @@ public class Post {
 
     private Staff staff;
 
-    private List<ReplyPost> replyPostList;
+    private List<ReplyTopic> replyTopicList;
 
     public String getId() {
         return id;
@@ -76,11 +76,11 @@ public class Post {
         this.categoryId = categoryId;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -124,11 +124,11 @@ public class Post {
         this.staff = staff;
     }
 
-    public List<ReplyPost> getReplyPostList() {
-        return replyPostList;
+    public List<ReplyTopic> getReplyTopicList() {
+        return replyTopicList;
     }
 
-    public void setReplyPostList(List<ReplyPost> replyPostList) {
-        this.replyPostList = replyPostList;
+    public void setReplyTopicList(List<ReplyTopic> replyTopicList) {
+        this.replyTopicList = replyTopicList;
     }
 }

@@ -1,13 +1,17 @@
 package tugbranch.forum.reset;
 
-import tugbranch.forum.dao.PostCategoryDao;
 import tugbranch.forum.dao.StaffDao;
+import tugbranch.forum.dao.TopicCategoryDao;
+import tugbranch.forum.dao.TopicDao;
 import tugbranch.forum.model.FileUploadEntity;
-import tugbranch.forum.model.PostCategory;
 import tugbranch.forum.model.ResponseObject;
 import tugbranch.forum.model.Staff;
+import tugbranch.forum.model.Topic;
+import tugbranch.forum.model.TopicCategory;
+import tugbranch.forum.utils.CommonUtils;
 import tugbranch.forum.utils.OpsLogTypeEnum;
 import tugbranch.forum.utils.OpsLogUtils;
+import tugbranch.forum.utils.TopicStatusEnum;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -33,6 +37,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -78,7 +83,10 @@ public class webServices {
     private OpsLogUtils opsLog;
 
     @Autowired
-    private PostCategoryDao postCategoryDaoImp;
+    private TopicCategoryDao topicCategoryDaoImp;
+
+    @Autowired
+    private TopicDao topicDaoImp;
 
     //region file upload
     @PostMapping("/fileUpload/{requestFileName}/{requestFileType}")
@@ -192,7 +200,7 @@ public class webServices {
     @RequestMapping(value = "/getTopicCategory", method = RequestMethod.GET)
     public ResponseObject getTopicCategory() {
         try {
-            List<PostCategory> items = postCategoryDaoImp.getTopicCategory();
+            List<TopicCategory> items = topicCategoryDaoImp.getTopicCategory();
             return new ResponseObject("ok", "查询成功", items);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -200,13 +208,39 @@ public class webServices {
         }
     }
 
-    @RequestMapping(value = "/getTopicCategory", method = RequestMethod.POST)
+    @RequestMapping(value = "/addTopic", method = RequestMethod.POST)
     public ResponseObject addTopic(@RequestParam("title") String title, @RequestParam("content") String content,
                                    @RequestParam("staffId") String staffId, @RequestParam("categoryId") String categoryId) {
         try {
 
+            Topic item = new Topic();
+            item.setId(UUID.randomUUID().toString());
+            item.setTitle(title);
+            item.setContent(content);
+            item.setStaffId(staffId);
+            item.setViewCount(0);
+            item.setReplyCount(0);
+            item.setCategoryId(categoryId);
+            item.setStatus(TopicStatusEnum.OPEN.getIndex());
+            item.setPutTop(false);
+            item.setResolved(false);
+            item.setEssence(false);
+            item.setDateTime(CommonUtils.getCurrentDateTime());
 
-            return new ResponseObject("ok", "查询成功", items);
+            topicDaoImp.addTopic(item);
+            return new ResponseObject("ok", "插入成功", item.getId());
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/getTopicById", method = RequestMethod.GET)
+    public ResponseObject getTopicById(@RequestParam("topicId") String topicId) {
+        try {
+
+            Topic item = topicDaoImp.getTopicById(topicId, false);
+            return new ResponseObject("ok", "查询成功", item);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             return new ResponseObject("error", "系统错误，请联系系统管理员");

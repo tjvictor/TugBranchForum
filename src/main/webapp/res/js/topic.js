@@ -33,6 +33,10 @@ function addTopic(){
     var user = jQuery.parseJSON(Cookies.get("user"));
     var staffId = user.id;
     var title = $('#titleTxt').val();
+    if($.trim(title) == ""){
+        alert('标题不能为空');
+        return;
+    }
     var content = replyKindeditor.html();
     var categoryId = $("#topicCategorySelect").val();
 
@@ -49,4 +53,11 @@ function addTopicCallback(data){
     if(data.status == "ok"){
         window.location = '/view/topic.html?topicId='+data.callBackData;
     }
+}
+
+function initTopic(topicId){
+    callAjax('/websiteService/getTopicById', '', 'getTopicByIdCallback', '', '', 'topicId='+topicId, '');
+}
+function getTopicByIdCallback(data){
+
 }

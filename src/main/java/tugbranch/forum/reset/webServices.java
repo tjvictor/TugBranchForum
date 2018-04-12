@@ -240,7 +240,80 @@ public class webServices {
         try {
 
             Topic item = topicDaoImp.getTopicById(topicId, false);
-            return new ResponseObject("ok", "查询成功", item);
+            if(StringUtils.isNotEmpty(item.getId())){
+                item.setStaff(staffDaoImp.getStaffById(item.getStaffId()));
+                item.setCategory(topicCategoryDaoImp.getTopicCategoryById(item.getCategoryId()));
+                return new ResponseObject("ok", "查询成功", item);
+            }
+            return new ResponseObject("ok", "查询成功", null);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/updateTopicViewCountById", method = RequestMethod.GET)
+    public ResponseObject updateTopicViewCountById(@RequestParam("topicId") String topicId) {
+        try {
+
+            topicDaoImp.updateTopicViewCountById(topicId);
+            return new ResponseObject("ok", "更新成功", null);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/updateTopicReplyCountById", method = RequestMethod.GET)
+    public ResponseObject updateTopicReplyCountById(@RequestParam("topicId") String topicId) {
+        try {
+
+            topicDaoImp.updateTopicReplyCountById(topicId);
+            return new ResponseObject("ok", "更新成功", null);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/updateTopicStatusById", method = RequestMethod.GET)
+    public ResponseObject updateTopicStatusById(@RequestParam("topicId") String topicId, @RequestParam("status") int status) {
+        try {
+            topicDaoImp.updateTopicPropertyById(topicId,"Status", status);
+            return new ResponseObject("ok", "更新成功", null);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/updateTopicPutTopById", method = RequestMethod.GET)
+    public ResponseObject updateTopicPutTopById(@RequestParam("topicId") String topicId, @RequestParam("putTop") int putTop) {
+        try {
+            topicDaoImp.updateTopicPropertyById(topicId,"PutTop", putTop);
+            return new ResponseObject("ok", "更新成功", null);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/updateTopicResolvedById", method = RequestMethod.GET)
+    public ResponseObject updateTopicResolvedById(@RequestParam("topicId") String topicId, @RequestParam("resolved") int resolved) {
+        try {
+            topicDaoImp.updateTopicPropertyById(topicId,"Resolved", resolved);
+            return new ResponseObject("ok", "更新成功", null);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/updateTopicEssenceById", method = RequestMethod.GET)
+    public ResponseObject updateTopicEssenceById(@RequestParam("topicId") String topicId, @RequestParam("essence") int essence) {
+        try {
+            topicDaoImp.updateTopicPropertyById(topicId,"Essence", essence);
+            return new ResponseObject("ok", "更新成功", null);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             return new ResponseObject("error", "系统错误，请联系系统管理员");

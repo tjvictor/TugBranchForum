@@ -55,9 +55,42 @@ function addTopicCallback(data){
     }
 }
 
-function initTopic(topicId){
-    callAjax('/websiteService/getTopicById', '', 'getTopicByIdCallback', '', '', 'topicId='+topicId, '');
+function initTopic(topicPar){
+    callAjax('/websiteService/getTopicById', '', 'getTopicByIdCallback', '', '', topicPar, '');
 }
 function getTopicByIdCallback(data){
+    if(data.status == "ok"){
+        var topic = data.callBackData;
+        var creator = topic.staff;
+        var category = topic.category;
 
+        //Topic Body
+        $('#tp_title').text(topic.title);
+        $('#tp_category').text(category.name);
+        $('#tp_category').css('display','inline-block');
+        if(topic.putTop)
+            $('#tp_putTop').css('display','inline-block');
+        if(topic.essence)
+            $('#tp_essence').css('display','inline-block');
+        if(topic.status == 2)
+            $('#tp_status').css('display','inline-block');
+        if(topic.resolved)
+            $('#tp_resolved').css('display','inline-block');
+        else
+            $('#tp_non_resolved').css('display','inline-block');
+        $('#tp_createTime').text('发布于 '+topic.dateTime);
+        $('#tp_creator').text('作者 '+creator.name+' - '+creator.companyName);
+        $('#tp_viewCount').text(topic.viewCount+' 次浏览');
+        $('#tp_content').html(topic.content);
+
+        //Reply-Topic Body
+
+        //Reply Body
+        if(topic.status == 2)
+            $('#reply-body').css('display','none');
+    }
+}
+
+function updateTopicViewCountById(topicPar){
+    callAjax('/websiteService/updateTopicViewCountById', '', '', '', '', topicPar, '');
 }

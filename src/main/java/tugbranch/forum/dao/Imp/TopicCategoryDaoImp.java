@@ -36,4 +36,27 @@ public class TopicCategoryDaoImp extends BaseDao implements TopicCategoryDao {
 
         return items;
     }
+
+    @Override
+    public TopicCategory getTopicCategoryById(String id) throws SQLException {
+        TopicCategory item = new TopicCategory();
+        String selectSql = String.format("SELECT Id, Name, Orders FROM TopicCategory where Id = '%s';", id);
+
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try(ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if(rs.next()){
+                        int i = 1;
+                        item.setId(rs.getString(i++));
+                        item.setName(rs.getString(i++));
+                        item.setOrders(rs.getInt(i++));
+                    }
+                }
+            }
+        }
+
+        return item;
+    }
+
+
 }

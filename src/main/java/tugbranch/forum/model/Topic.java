@@ -17,6 +17,7 @@ public class Topic {
     private String dateTime;
 
     private Staff staff;
+    private TopicCategory category;
 
     private List<ReplyTopic> replyTopicList;
 
@@ -130,5 +131,13 @@ public class Topic {
 
     public void setReplyTopicList(List<ReplyTopic> replyTopicList) {
         this.replyTopicList = replyTopicList;
+    }
+
+    public TopicCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(TopicCategory category) {
+        this.category = category;
     }
 }

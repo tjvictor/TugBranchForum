@@ -1,5 +1,7 @@
 package tugbranch.forum.dao.Imp;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import tugbranch.forum.dao.StaffDao;
 import tugbranch.forum.dao.TopicDao;
 import tugbranch.forum.model.Topic;
 
@@ -13,6 +15,7 @@ import java.sql.Statement;
 
 @Component
 public class TopicDaoImp extends BaseDao implements TopicDao {
+
     @Override
     public void addTopic(Topic item) throws SQLException {
         try (Connection connection = DriverManager.getConnection(dbConnectString)){
@@ -40,7 +43,7 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
     public Topic getTopicById(String topicId, boolean topicReply) throws SQLException {
         Topic item = new Topic();
 
-        String selectSql = String.format("SELECT a.Id, a.Name, a.Password, a.CompanyId, a.Sid, a.Tel, a.RoleId, a.Remark, a.Status, b.Name, c.Name FROM Staff a join Company b on a.CompanyId=b.Id join Role c on a.RoleId=c.Id where a.Id = '%s' ", topicId);
+        String selectSql = String.format("SELECT Id, Title, Content, StaffId, ViewCount, ReplyCount, CategoryId, Status, PutTop, Resolved, Essence, CreateTime FROM Topic where Id = '%s' ", topicId);
 
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
@@ -48,7 +51,17 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
                     if (rs.next()) {
                         int i = 1;
                         item.setId(rs.getString(i++));
-
+                        item.setTitle(rs.getString(i++));
+                        item.setContent(rs.getString(i++));
+                        item.setStaffId(rs.getString(i++));
+                        item.setViewCount(rs.getInt(i++));
+                        item.setReplyCount(rs.getInt(i++));
+                        item.setCategoryId(rs.getString(i++));
+                        item.setStatus(rs.getInt(i++));
+                        item.setPutTop(rs.getBoolean(i++));
+                        item.setResolved(rs.getBoolean(i++));
+                        item.setEssence(rs.getBoolean(i++));
+                        item.setDateTime(rs.getString(i++));
                     }
                 }
             }
@@ -56,4 +69,36 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
 
         return item;
     }
+
+    @Override
+    public void updateTopicViewCountById(String topicId) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(dbConnectString)){
+            String insertSql = String.format("update Topic set ViewCount=ViewCount+1 where Id = '%s';", topicId);
+            try(PreparedStatement ps = connection.prepareStatement(insertSql)) {
+                ps.executeUpdate();
+            }
+        }
+    }
+
+    @Override
+    public void updateTopicReplyCountById(String topicId) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(dbConnectString)){
+            String insertSql = String.format("update Topic set ReplyCount=ReplyCount+1 where Id = '%s';", topicId);
+            try(PreparedStatement ps = connection.prepareStatement(insertSql)) {
+                ps.executeUpdate();
+            }
+        }
+    }
+
+    @Override
+    public void updateTopicPropertyById(String topicId, String property, int status) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(dbConnectString)){
+            String insertSql = String.format("update Topic set %s=%s where Id = '%s';", property, status, topicId);
+            try(PreparedStatement ps = connection.prepareStatement(insertSql)) {
+                ps.executeUpdate();
+            }
+        }
+    }
+
+
 }

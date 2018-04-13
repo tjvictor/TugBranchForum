@@ -14,7 +14,7 @@ public class Topic {
     private boolean putTop;
     private boolean resolved;
     private boolean essence;
-    private String dateTime;
+    private String createTime;
 
     private Staff staff;
     private TopicCategory category;
@@ -109,12 +109,12 @@ public class Topic {
         this.essence = essence;
     }
 
-    public String getDateTime() {
-        return dateTime;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public Staff getStaff() {

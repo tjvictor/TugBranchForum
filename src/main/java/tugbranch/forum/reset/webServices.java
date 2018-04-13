@@ -226,7 +226,7 @@ public class webServices {
             item.setPutTop(false);
             item.setResolved(false);
             item.setEssence(false);
-            item.setDateTime(CommonUtils.getCurrentDateTime());
+            item.setCreateTime(CommonUtils.getCurrentDateTime());
 
             topicDaoImp.addTopic(item);
             return new ResponseObject("ok", "插入成功", item.getId());
@@ -270,6 +270,20 @@ public class webServices {
                 return new ResponseObject("ok", "查询成功", item);
             }
             return new ResponseObject("ok", "查询成功", null);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/getTopicListByCategory", method = RequestMethod.GET)
+    public ResponseObject getTopicListByCategory(@RequestParam("categoryId") String categoryId,
+                                                 @RequestParam("pageNumber") int pageNumber,
+                                                 @RequestParam("pageSize") int pageSize) {
+        try {
+
+            List<Topic> items = topicDaoImp.getTopicListByCategory(categoryId, pageNumber, pageSize);
+            return new ResponseObject("ok", "查询成功", items);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             return new ResponseObject("error", "系统错误，请联系系统管理员");

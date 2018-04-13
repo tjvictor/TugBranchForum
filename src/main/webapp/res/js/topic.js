@@ -85,11 +85,11 @@ function getTopicByIdCallback(data){
         $('#tp_content').html(topic.content);
 
         //Reply-Topic Body
-        $('#tp_replyCount').text(topic.replyCount +'回复');
+        $('#tp_replyCount').text(topic.replyCount +' 回复');
 
         //Reply Body
-        if(topic.status == 2)
-            $('#reply-body').css('display','none');
+        if(topic.status != 2)
+            $('#reply-body').css('display','block');
     }
 }
 
@@ -123,7 +123,10 @@ function getReplyTopicsByTopicIdCallback(data){
             rtp_body += '   <div class="clear"></div>';
             rtp_body += '</div>';
         }
-        $('#rtp_body').html(rtp_body);
+        if(rtp_body != '')
+            $('#rtp_body').html(rtp_body);
+        else
+            $('#rtp_body').html('<div class="main-panel-body-cell">此帖子还没有任何回复</div>');
     }
 }
 

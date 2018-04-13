@@ -107,12 +107,15 @@ function initPagination(obj, pageNumber, pageSize, totalNumber, onSelectPageFunc
 
     if (pageNumber == 1) {
         $(obj + ' #page_previous').css('display', 'none');
-        $(obj + ' #page_next').css('display', 'block');
-        $(obj + ' #page_next').on("click",
-        function() {
-            setCurrentPageClass(obj, 1);
-            nextPagination(obj, pageNumber, pageSize, totalNumber, onSelectPageFunction);
-        });
+        if(maxPageNumber>5){
+            $(obj + ' #page_next').css('display', 'block');
+            $(obj + ' #page_next').on("click",
+            function() {
+                setCurrentPageClass(obj, 1);
+                nextPagination(obj, pageNumber, pageSize, totalNumber, onSelectPageFunction);
+            });
+        } else
+            $(obj + ' #page_next').css('display', 'none');
     } else if (pageNumber + 5 >= maxPageNumber) {
         $(obj + ' #page_previous').css('display', 'block');
         $(obj + ' #page_next').css('display', 'none');

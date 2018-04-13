@@ -21,4 +21,6 @@ public interface TopicDao {
     void updateTopicPropertyById(String topicId, String property, int status) throws SQLException;
 
     List<ReplyTopic> getReplyTopicsByTopicId(String topicId, int pageNumber, int pageSize) throws SQLException;
+
+    List<Topic> getTopicListByCategory(String categoryId, int pageNumber, int pageSize) throws SQLException;
 }

@@ -4,6 +4,7 @@ import tugbranch.forum.dao.StaffDao;
 import tugbranch.forum.dao.TopicCategoryDao;
 import tugbranch.forum.dao.TopicDao;
 import tugbranch.forum.model.FileUploadEntity;
+import tugbranch.forum.model.ReplyTopic;
 import tugbranch.forum.model.ResponseObject;
 import tugbranch.forum.model.Staff;
 import tugbranch.forum.model.Topic;
@@ -235,6 +236,29 @@ public class webServices {
         }
     }
 
+    @RequestMapping(value = "/addReplyTopic", method = RequestMethod.POST)
+    public ResponseObject addReplyTopic(@RequestParam("topicId") String topicId, @RequestParam("content") String content,
+                                   @RequestParam("staffId") String staffId, @RequestParam("topicCreateTime") String topicCreateTime) {
+        try {
+
+            ReplyTopic item = new ReplyTopic();
+            item.setId(UUID.randomUUID().toString());
+            item.setTopicId(topicId);
+            item.setContent(content);
+            item.setStaffId(staffId);
+            item.setResolved(false);
+            item.setOrders(CommonUtils.getDateDifference(topicCreateTime));
+            item.setCreateTime(CommonUtils.getCurrentDateTime());
+
+            topicDaoImp.addReplyTopic(item);
+            updateTopicReplyCountById(topicId);
+            return new ResponseObject("ok", "插入成功", topicId);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
     @RequestMapping(value = "/getTopicById", method = RequestMethod.GET)
     public ResponseObject getTopicById(@RequestParam("topicId") String topicId) {
         try {
@@ -246,6 +270,20 @@ public class webServices {
                 return new ResponseObject("ok", "查询成功", item);
             }
             return new ResponseObject("ok", "查询成功", null);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/getReplyTopicsByTopicId", method = RequestMethod.GET)
+    public ResponseObject getReplyTopicsByTopicId(@RequestParam("topicId") String topicId,
+                                                 @RequestParam("pageNumber") int pageNumber,
+                                                 @RequestParam("pageSize") int pageSize) {
+        try {
+
+            List<ReplyTopic> items = topicDaoImp.getReplyTopicsByTopicId(topicId, pageNumber, pageSize);
+            return new ResponseObject("ok", "查询成功", items);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             return new ResponseObject("error", "系统错误，请联系系统管理员");

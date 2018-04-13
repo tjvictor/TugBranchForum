@@ -65,6 +65,7 @@ function getTopicByIdCallback(data){
         var category = topic.category;
 
         //Topic Body
+        $('#tp_id').val(topic.id);
         $('#tp_title').text(topic.title);
         $('#tp_category').text(category.name);
         $('#tp_category').css('display','inline-block');
@@ -78,12 +79,13 @@ function getTopicByIdCallback(data){
             $('#tp_resolved').css('display','inline-block');
         else
             $('#tp_non_resolved').css('display','inline-block');
-        $('#tp_createTime').text('发布于 '+topic.dateTime);
+        $('#tp_createTime').text(topic.dateTime);
         $('#tp_creator').text('作者 '+creator.name+' - '+creator.companyName);
         $('#tp_viewCount').text(topic.viewCount+' 次浏览');
         $('#tp_content').html(topic.content);
 
         //Reply-Topic Body
+        $('#tp_replyCount').text(topic.replyCount +'回复');
 
         //Reply Body
         if(topic.status == 2)
@@ -93,4 +95,58 @@ function getTopicByIdCallback(data){
 
 function updateTopicViewCountById(topicPar){
     callAjax('/websiteService/updateTopicViewCountById', '', '', '', '', topicPar, '');
+}
+
+function initTopicReply(topicPar, pageNumber, pageSize){
+    var param = topicPar+"&pageNumber="+pageNumber+"&pageSize="+pageSize;
+    callAjax('/websiteService/getReplyTopicsByTopicId', '', 'getReplyTopicsByTopicIdCallback', '', '', param, '');
+}
+function getReplyTopicsByTopicIdCallback(data){
+    if(data.status == "ok"){
+        $('#rtp_body').html('');
+        var rtp_body = '';
+        var replyTopics = data.callBackData;
+        for(var i = 0; i < replyTopics.length; i++){
+            var item = replyTopics[i];
+            var staff = item.staff;
+            rtp_body += '<div style="border-bottom: 5px solid #E1E1E1;padding:10px;">';
+            rtp_body += '   <div class="left" style="width:48px;height:48px;background-image:url('+staff.avatar+');background-size:48px 48px;position:absolute;"></div>';
+            rtp_body += '   <div style="margin-left:60px;">';
+            rtp_body += '       <div>';
+            rtp_body += '           <div class="left">'+staff.name+'</div>';
+            rtp_body += '           <div class="right">'+item.createTime+'</div>';
+            rtp_body += '           <div class="clear"></div>';
+            rtp_body += '       </div>';
+            rtp_body += '       <hr style="margin:5px 0px;">';
+            rtp_body += '       <div style="margin: 20px 0px;">'+item.content+'</div>';
+            rtp_body += '   </div>';
+            rtp_body += '   <div class="clear"></div>';
+            rtp_body += '</div>';
+        }
+        $('#rtp_body').html(rtp_body);
+    }
+}
+
+function addReplyTopic(){
+    var user = jQuery.parseJSON(Cookies.get("user"));
+    var staffId = user.id;
+    if($.trim(replyKindeditor.html()) == ""){
+        alert('回复不能为空');
+        return;
+    }
+    var content = replyKindeditor.html();
+
+    var postValue = {
+        "topicId": $('#tp_id').val(),
+        "content": content,
+        "staffId": staffId,
+        "topicCreateTime": $('#tp_createTime').text(),
+    };
+
+    callAjax('/websiteService/addReplyTopic', '', 'addReplyTopicCallback', '', 'POST', postValue, '.window-page-mask');
+}
+function addReplyTopicCallback(data){
+    if(data.status == "ok"){
+        window.location = '/view/topic.html?topicId='+data.callBackData;
+    }
 }

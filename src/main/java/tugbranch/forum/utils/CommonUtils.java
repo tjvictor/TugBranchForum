@@ -39,4 +39,14 @@ public class CommonUtils {
         }
 
     }
+
+    public static int getDateDifference(String dateStr){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            return (int)(date.getTime() - sdf.parse(dateStr).getTime());
+        } catch (ParseException e) {
+            return -1;
+        }
+    }
 }

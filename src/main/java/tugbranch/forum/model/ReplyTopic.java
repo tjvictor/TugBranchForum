@@ -7,7 +7,7 @@ public class ReplyTopic {
     private String staffId;
     private boolean resolved;
     private String createTime;
-    private int order;
+    private int orders;
 
     private Staff staff;
 
@@ -59,12 +59,12 @@ public class ReplyTopic {
         this.createTime = createTime;
     }
 
-    public int getOrder() {
-        return order;
+    public int getOrders() {
+        return orders;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setOrders(int orders) {
+        this.orders = orders;
     }
 
     public Staff getStaff() {

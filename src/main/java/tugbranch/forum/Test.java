@@ -1,7 +1,9 @@
 package tugbranch.forum;
 
 
-import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Test {
     public static void main(String[] args) {
@@ -17,6 +19,17 @@ public class Test {
                 }
             }
         }*/
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            Date date1 = sdf.parse("2018-04-13 13:28:36");
 
+            System.out.println(date.getTime());
+            System.out.println(date1.getTime());
+            //System.out.println((date-date1).getTime());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

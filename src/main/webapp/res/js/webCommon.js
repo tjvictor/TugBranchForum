@@ -100,6 +100,37 @@ function selectPageFunction(){
 
 }
 
+function kindeditorFileUploading(fileElementId, kindeditorId, fileType) {
+    $.ajaxFileUpload({
+        url: '/websiteService/fileUpload/' + fileElementId + '/' + fileType,
+        secureuri: false,
+        dataType: 'json',
+        fileElementId: fileElementId,
+        success: function(data, status) {
+            if (data.status == "ok") {
+                if (kindeditorId) {
+                    if (data.callBackData.fileType == 'image') {
+                        kindeditorId.insertHtml('<p><img src="' + data.callBackData.fileUrl + '" style="max-width:100%" /></p>');
+                    } else if (data.callBackData.fileType == 'audio') {
+                        kindeditorId.insertHtml('<p><audio src="' + data.callBackData.fileUrl + '" style="max-width:100%" controls="controls" style="max-width:100%;max-height:100%;">您的浏览器不支持此音频，请使用Chrome浏览观看</audio></p>');
+                    } else if (data.callBackData.fileType == 'video') {
+                        kindeditorId.insertHtml('<p><video src="' + data.callBackData.fileUrl + '" style="max-width:100%" controls="controls" style="max-width:100%;max-height:100%;">您的浏览器不支持此视频，请使用Chrome浏览观看</video></p>');
+                    } else if (data.callBackData.fileType == 'file') {
+                        kindeditorId.insertHtml('<a class="ke-insertfile" href="' + data.callBackData.fileUrl + '" target="_blank">' + data.callBackData.fileName + '</a>');
+                    }
+
+                }
+            }
+        },
+        error: function(data, status, e) {
+            alert(e);
+        },
+        complete: function(data) {
+            $('#' + fileElementId).val('');
+        }
+    });
+}
+
 function showToday() {
     var enabled = 0;
     today = new Date();

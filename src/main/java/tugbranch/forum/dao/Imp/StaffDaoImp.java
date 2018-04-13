@@ -89,7 +89,7 @@ public class StaffDaoImp extends BaseDao implements StaffDao {
     public Staff getStaffById(String id) throws SQLException {
         Staff item = new Staff();
 
-        String selectSql = String.format("SELECT a.Id, a.Name, a.Password, a.CompanyId, a.Sid, a.Tel, a.RoleId, a.Remark, a.Status, b.Name, c.Name FROM Staff a join Company b on a.CompanyId=b.Id join Role c on a.RoleId=c.Id where a.Id = '%s' ", id);
+        String selectSql = String.format("SELECT a.Id, a.Name, a.Password, a.CompanyId, a.Sid, a.Tel, a.RoleId, a.Remark, a.Status, a.Avatar, b.Name, c.Name FROM Staff a join Company b on a.CompanyId=b.Id join Role c on a.RoleId=c.Id where a.Id = '%s' ", id);
 
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
@@ -105,6 +105,7 @@ public class StaffDaoImp extends BaseDao implements StaffDao {
                         item.setRoleId(rs.getString(i++));
                         item.setRemark(rs.getString(i++));
                         item.setStatus(rs.getString(i++));
+                        item.setAvatar(rs.getString(i++));
                         item.setCompanyName(rs.getString(i++));
                         item.setRoleName(rs.getString(i++));
                     }

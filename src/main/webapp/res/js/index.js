@@ -10,6 +10,14 @@ function getTopicCategoryCallback(data){
         }
     }
     $('#category-tab').html(tabTemplate);
+    $('#category-tab .main-panel-header-tab').click(
+        function(event){
+            $('#category-tab .main-panel-header-tab').removeClass('main-panel-header-current-tab');
+            $(event.target).addClass('main-panel-header-current-tab');
+            getTopicListByCategory($(event.target).attr('data-value'), 1, globalPageSize);
+            getTopicCountByCategory($(event.target).attr('data-value'));
+        }
+    );
 }
 
 function getTopicListByCategory(categoryId, pageNumber, pageSize){
@@ -24,7 +32,7 @@ function getTopicListByCategoryCallback(data){
             var topic = data.callBackData[i];
             topic_body += '<div class="main-panel-body-cell">';
             topic_body += ' <img src="'+topic.staff.avatar+'" class="left" style="width:36px;height:36px;margin-top:6px;">';
-            topic_body += ' <span style="margin-left:10px;">'+topic.staff.name+'</span>';
+            topic_body += ' <a href="/view/userHomePage.html?userId='+topic.staff.id+'" target="_blank" style="margin-left:10px;cursor:pointer">'+topic.staff.name+'</a>';
             topic_body += ' <span style="color: #9e78c0;font-size: 12px">'+topic.replyCount+'</span>';
             topic_body += ' <span style="margin: 0 -3px;">/</span>';
             topic_body += ' <span style="color: #b4b4b4;font-size: 12px">'+topic.viewCount+'</span>';
@@ -44,16 +52,29 @@ function getTopicListByCategoryCallback(data){
             topic_body += '</div>';
         }
         if(topic_body != ''){
-            topic_body += '<div id = "pagination" class="pagination" style="margin: 10px 0 0 10px;"></div>';
             $('#topicListBody').html(topic_body);
-            createPagination('pagination', 1, 10, data.callBackData.length, topicCategoryTabChange);
         }else{
             $('#topicListBody').html('<div class="main-panel-body-cell">此分类下面没有数据</div>');
         }
     }
 }
 
-function topicCategoryTabChange(pageNumber, pageSize){
+function getTopicCountByCategory(categoryId){
+    var param = "categoryId="+categoryId;
+    callAjax('/websiteService/getTopicCountByCategory', '', 'getTopicCountByCategoryCallback', '', '', param, '');
+}
+function getTopicCountByCategoryCallback(data){
+    if(data.status == "ok"){
+        if(data.callBackData>0){
+            createPagination('pagination', 1, globalPageSize, data.callBackData, topicPaginationChange);
+            $('#pagination').css('display','block');
+        }
+        else
+            $('#pagination').css('display','none');
+    }
+}
+
+function topicPaginationChange(pageNumber, pageSize){
     var param = "categoryId="+$('.main-panel-header-current-tab').attr('data-value')+"&pageNumber="+pageNumber+"&pageSize="+pageSize;
     callAjax('/websiteService/getTopicListByCategory', '', 'getTopicListByCategoryCallback', '', '', param, '');
 }

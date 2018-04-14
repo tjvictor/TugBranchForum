@@ -79,7 +79,7 @@ function getTopicByIdCallback(data){
             $('#tp_resolved').css('display','inline-block');
         else
             $('#tp_non_resolved').css('display','inline-block');
-        $('#tp_createTime').text(topic.dateTime);
+        $('#tp_createTime').text(topic.createTime);
         $('#tp_creator').text('作者 '+creator.name+' - '+creator.companyName);
         $('#tp_viewCount').text(topic.viewCount+' 次浏览');
         $('#tp_content').html(topic.content);
@@ -123,11 +123,30 @@ function getReplyTopicsByTopicIdCallback(data){
             rtp_body += '   <div class="clear"></div>';
             rtp_body += '</div>';
         }
-        if(rtp_body != '')
+        if(rtp_body != ''){
             $('#rtp_body').html(rtp_body);
+        }
         else
             $('#rtp_body').html('<div class="main-panel-body-cell">此帖子还没有任何回复</div>');
     }
+}
+
+function getReplyTopicCountByTopicId(topicPar){
+    callAjax('/websiteService/getReplyTopicCountByTopicId', '', 'getReplyTopicCountByTopicIdCallback', '', '', topicPar, '');
+}
+function getReplyTopicCountByTopicIdCallback(data){
+    if(data.status == "ok"){
+        if(data.callBackData>0){
+            createPagination('pagination', 1, globalPageSize, data.callBackData, replyTopicPaginationChange);
+            $('#pagination').css('display','block');
+        }
+        else
+            $('#pagination').css('display','none');
+    }
+}
+
+function replyTopicPaginationChange(pageNumber, pageSize){
+    initTopicReply("topicId="+$('#tp_id').val(), pageNumber, pageSize);
 }
 
 function addReplyTopic(){

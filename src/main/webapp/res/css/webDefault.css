@@ -63,16 +63,17 @@ body {
 .navBar .navBar-inner .container ul li ul li { float:none; width:100%; }
 
 .navBar .brand {
-    width: 180px;
-    padding: 3px 20px;
-    height: 38px;
+    width: 400px;
+    height: 50px;
+    padding: 0px 20px;
     display: block;
     float: left;
-    margin-left: -20px;
     font-size: 20px;
     font-weight: 200;
     color: #777;
     text-shadow: 0 1px 0 #fff;
+    background: -webkit-linear-gradient(left, #ace, #f96);
+    -webkit-mask-image: url('/res/img/logo.png');
 }
 
 
@@ -80,6 +81,7 @@ body {
     margin-top: 6px;
     float: left;
     position: relative;
+    margin-left: 30px;
 }
 
 
@@ -189,8 +191,15 @@ input.search-query {
     max-width: 1400px;
     min-width: 960px;
     margin: 15px auto;
-    min-height: 400px;
     position: relative;
+}
+
+.main:after{
+    clear:both;
+    content:"";
+    position: absolute;
+    width:100%;
+    height:80px;
 }
 
 .main-leftPanel{
@@ -259,7 +268,9 @@ input.search-query {
 .foot{
     clear:both;
     background: #fff;
-    position: relative;
+    bottom: 0px;
+    width: 100%;
+    position: fixed;
 }
 
 .foot-main{

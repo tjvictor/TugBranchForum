@@ -2,6 +2,7 @@
     createPagination('div', 1, 10, 273, selectPageFunction);
 });*/
 
+var globalPageSize = 10;
 function createPagination(objId, pageNumber, pageSize, totalNumber, onSelectPageFunction) {
     var content = '<ul>';
     content += '    <li id="page_first">';

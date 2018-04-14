@@ -195,5 +195,143 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
         return items;
     }
 
+    @Override
+    public int getTopicCountByCategory(String categoryId) throws SQLException {
+        String whereSql = "";
+        if(StringUtils.isNotEmpty(categoryId))
+            whereSql = String.format(" where CategoryId = '%s'", categoryId);
 
+        String selectSql = String.format("SELECT count(0) FROM Topic %s", whereSql);
+
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    @Override
+    public int getReplyTopicCountByTopicId(String topicId) throws SQLException {
+        String selectSql = String.format("SELECT count(0) FROM ReplyTopic where TopicId = '%s'", topicId);
+
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    @Override
+    public List<Topic> getPublicTopicsByUserId(String userId, int pageNumber, int pageSize) throws SQLException {
+        List<Topic> items = new ArrayList<Topic>();
+        String selectSql = String.format("SELECT Id, Title, Content, StaffId, ViewCount, ReplyCount, CategoryId, Status, PutTop, Resolved, Essence, CreateTime FROM Topic where StaffId = '%s' order by CreateTime desc limit %s,%s", userId, (pageNumber-1)*pageSize, pageSize);
+
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
+                    while (rs.next()) {
+                        int i = 1;
+                        Topic item = new Topic();
+                        item.setId(rs.getString(i++));
+                        item.setTitle(rs.getString(i++));
+                        item.setContent(rs.getString(i++));
+                        item.setStaffId(rs.getString(i++));
+                        item.setViewCount(rs.getInt(i++));
+                        item.setReplyCount(rs.getInt(i++));
+                        item.setCategoryId(rs.getString(i++));
+                        item.setStatus(rs.getInt(i++));
+                        item.setPutTop(rs.getBoolean(i++));
+                        item.setResolved(rs.getBoolean(i++));
+                        item.setEssence(rs.getBoolean(i++));
+                        item.setCreateTime(rs.getString(i++));
+                        item.setStaff(staffDaoImp.getStaffById(item.getStaffId()));
+                        item.setCategory(topicCategoryDaoImp.getTopicCategoryById(item.getCategoryId()));
+                        items.add(item);
+                    }
+                }
+            }
+        }
+
+        return items;
+    }
+
+    @Override
+    public int getPublicTopicCountByUserId(String userId) throws SQLException {
+        String selectSql = String.format("SELECT count(0) FROM Topic where StaffId = '%s'", userId);
+
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    @Override
+    public List<Topic> getReplyTopicsByUserId(String userId, int pageNumber, int pageSize) throws SQLException {
+        List<Topic> items = new ArrayList<Topic>();
+        String selectSql = String.format("SELECT distinct t.Id, t.Title, t.Content, t.StaffId, t.ViewCount, t.ReplyCount, t.CategoryId, t.Status, t.PutTop, t.Resolved, t.Essence, t.CreateTime FROM Topic t JOIN ReplyTopic r on t.Id = r.TopicId where r.StaffId = '%s' order by t.CreateTime desc limit %s,%s", userId, (pageNumber-1)*pageSize, pageSize);
+
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
+                    while (rs.next()) {
+                        int i = 1;
+                        Topic item = new Topic();
+                        item.setId(rs.getString(i++));
+                        item.setTitle(rs.getString(i++));
+                        item.setContent(rs.getString(i++));
+                        item.setStaffId(rs.getString(i++));
+                        item.setViewCount(rs.getInt(i++));
+                        item.setReplyCount(rs.getInt(i++));
+                        item.setCategoryId(rs.getString(i++));
+                        item.setStatus(rs.getInt(i++));
+                        item.setPutTop(rs.getBoolean(i++));
+                        item.setResolved(rs.getBoolean(i++));
+                        item.setEssence(rs.getBoolean(i++));
+                        item.setCreateTime(rs.getString(i++));
+                        item.setStaff(staffDaoImp.getStaffById(item.getStaffId()));
+                        item.setCategory(topicCategoryDaoImp.getTopicCategoryById(item.getCategoryId()));
+                        items.add(item);
+                    }
+                }
+            }
+        }
+
+        return items;
+    }
+
+    @Override
+    public int getReplyTopicCountByUserId(String userId) throws SQLException {
+        String selectSql = String.format("SELECT COUNT(distinct TopicId) FROM ReplyTopic WHERE StaffId = '%s'", userId);
+
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if (rs.next()) {
+                        return rs.getInt(1);
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
 }

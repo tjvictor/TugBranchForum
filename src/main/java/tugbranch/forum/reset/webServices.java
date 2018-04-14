@@ -197,6 +197,20 @@ public class webServices {
     }
     //endregion
 
+    //region User
+    @RequestMapping(value = "/getUserById", method = RequestMethod.GET)
+    public ResponseObject getUserById(@RequestParam(value = "userId") String id) {
+
+        try {
+            Staff item = staffDaoImp.getStaffById(id);
+            return new ResponseObject("ok", "查询成功", item);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+    //endregion
+
     //region Topic
     @RequestMapping(value = "/getTopicCategory", method = RequestMethod.GET)
     public ResponseObject getTopicCategory() {
@@ -290,6 +304,18 @@ public class webServices {
         }
     }
 
+    @RequestMapping(value = "/getTopicCountByCategory", method = RequestMethod.GET)
+    public ResponseObject getTopicCountByCategory(@RequestParam("categoryId") String categoryId) {
+        try {
+
+            int count = topicDaoImp.getTopicCountByCategory(categoryId);
+            return new ResponseObject("ok", "查询成功", count);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
     @RequestMapping(value = "/getReplyTopicsByTopicId", method = RequestMethod.GET)
     public ResponseObject getReplyTopicsByTopicId(@RequestParam("topicId") String topicId,
                                                  @RequestParam("pageNumber") int pageNumber,
@@ -303,6 +329,19 @@ public class webServices {
             return new ResponseObject("error", "系统错误，请联系系统管理员");
         }
     }
+
+    @RequestMapping(value = "/getReplyTopicCountByTopicId", method = RequestMethod.GET)
+    public ResponseObject getReplyTopicCountByTopicId(@RequestParam("topicId") String topicId) {
+        try {
+
+            int count = topicDaoImp.getReplyTopicCountByTopicId(topicId);
+            return new ResponseObject("ok", "查询成功", count);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
 
     @RequestMapping(value = "/updateTopicViewCountById", method = RequestMethod.GET)
     public ResponseObject updateTopicViewCountById(@RequestParam("topicId") String topicId) {
@@ -372,5 +411,52 @@ public class webServices {
         }
     }
 
+    @RequestMapping(value = "/getPublicTopicsByUserId", method = RequestMethod.GET)
+    public ResponseObject getPublicTopicsByUserId(@RequestParam("userId") String userId,
+                                                  @RequestParam("pageNumber") int pageNumber,
+                                                  @RequestParam("pageSize") int pageSize) {
+        try {
+            List<Topic> items =  topicDaoImp.getPublicTopicsByUserId(userId,pageNumber, pageSize);
+            return new ResponseObject("ok", "查询成功", items);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/getPublicTopicCountByUserId", method = RequestMethod.GET)
+    public ResponseObject getPublicTopicCountByUserId(@RequestParam("userId") String userId) {
+        try {
+            int count =  topicDaoImp.getPublicTopicCountByUserId(userId);
+            return new ResponseObject("ok", "查询成功", count);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/getReplyTopicsByUserId", method = RequestMethod.GET)
+    public ResponseObject getReplyTopicsByUserId(@RequestParam("userId") String userId,
+                                                  @RequestParam("pageNumber") int pageNumber,
+                                                  @RequestParam("pageSize") int pageSize) {
+        try {
+            List<Topic> items =  topicDaoImp.getReplyTopicsByUserId(userId,pageNumber, pageSize);
+            return new ResponseObject("ok", "查询成功", items);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
+    @RequestMapping(value = "/getReplyTopicCountByUserId", method = RequestMethod.GET)
+    public ResponseObject getReplyTopicCountByUserId(@RequestParam("userId") String userId) {
+        try {
+            int count =  topicDaoImp.getReplyTopicCountByUserId(userId);
+            return new ResponseObject("ok", "查询成功", count);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
     //endregion
 }

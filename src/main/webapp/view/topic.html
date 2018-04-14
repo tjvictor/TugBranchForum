@@ -13,6 +13,8 @@
     <script type="text/javascript" src="../res/js/ajaxfileupload.js"></script>
     <script type="text/javascript" src="../res/kindeditor/plugins/singleimg/singleimg.js"></script>
     <script type="text/javascript" src="../res/kindeditor/plugins/singlefile/singlefile.js"></script>
+    <link rel="stylesheet" type="text/css" href="../res/pagination/pagination.css">
+    <script type="text/javascript" src="../res/pagination/pagination.js"></script>
     <script type="text/javascript" src="../res/js/topic.js"></script>
     <script type="text/javascript" src="../res/js/webCommon.js"></script>
     <script>
@@ -22,7 +24,8 @@
                 initTopicKindeditor();
                 updateTopicViewCountById(topicPar);
                 initTopic(topicPar);
-                initTopicReply(topicPar, 1, 10);
+                initTopicReply(topicPar, 1, globalPageSize);
+                getReplyTopicCountByTopicId(topicPar);
             }
         });
     </script>
@@ -31,9 +34,7 @@
 <div class="navBar">
     <div class="navBar-inner">
         <div class="container">
-            <a class="brand" href="/">
-                <img src="/public/images/logo.png">
-            </a>
+            <div class="brand"></div>
             <div id="search_form" class="navBar-search">
                 <input type="text" id="q" name="q" class="search-query left" value="">
                 <div class="navBar-searchBtn left"></div>
@@ -96,19 +97,10 @@
                 <span id="tp_replyCount" style="font-size:14px;">0 回复</span>
             </div>
             <div id="rtp_body" class="main-panel-body" style="padding:0px;">
-                <!--<div>
-                    <div class="left" style="width:48px;height:48px;background-image:url('../res/img/professor_48.png');position:absolute;"></div>
-                    <div style="margin-left:60px;">
-                        <div>
-                            <div class="left">路人-戊</div>
-                            <div class="right">1楼•3 天前</div>
-                            <div class="clear"></div>
-                        </div>
-                        <hr style="margin:5px 0px;">
-                        <div style="margin: 20px 0px;">看样子好像是没打包，你直接在console里面看下最近实现过类似的功能。应该和楼主自己实现的差不多把。如果是以太坊的账户转账，用getBlock拿。如果是代币的话，用getLogs，把address和topic[0]，fromBlock,toBlock设置在过滤器里。周期遍历一下。</div>
-                    </div>
-                    <div class="clear"></div>
-                </div>-->
+            </div>
+
+            <div class="main-panel-body" style="padding:5px 0px;">
+                <div id = "pagination" class="pagination" style="display:none;"></div>
             </div>
         </div>
 

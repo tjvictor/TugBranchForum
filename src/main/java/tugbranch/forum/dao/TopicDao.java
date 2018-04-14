@@ -23,4 +23,16 @@ public interface TopicDao {
     List<ReplyTopic> getReplyTopicsByTopicId(String topicId, int pageNumber, int pageSize) throws SQLException;
 
     List<Topic> getTopicListByCategory(String categoryId, int pageNumber, int pageSize) throws SQLException;
+
+    int getTopicCountByCategory(String categoryId) throws SQLException;
+
+    int getReplyTopicCountByTopicId(String topicId) throws SQLException;
+
+    List<Topic> getPublicTopicsByUserId(String userId, int pageNumber, int pageSize) throws SQLException;
+
+    int getPublicTopicCountByUserId(String userId) throws SQLException;
+
+    List<Topic> getReplyTopicsByUserId(String userId, int pageNumber, int pageSize) throws SQLException;
+
+    int getReplyTopicCountByUserId(String userId) throws SQLException;
 }

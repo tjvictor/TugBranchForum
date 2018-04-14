@@ -10,11 +10,23 @@
     <script type="text/javascript" src="../res/js/js.cookie.js"></script>
     <script type="text/javascript" src="../res/pagination/pagination.js"></script>
     <script type="text/javascript" src="../res/js/webCommon.js"></script>
+    <script type="text/javascript" src="../res/js/user.js"></script>
+    <script type="text/javascript" src="../res/js/topic.js"></script>
+
     <script>
         $(function (){
             if(checkUser()){
-                createPagination('pagination1', 1, 10, 173, selectPageFunction);
-                createPagination('pagination2', 1, 10, 73, selectPageFunction);
+                var userPar = window.location.search.substring(1);
+                if(!userPar){
+                    var user = jQuery.parseJSON(Cookies.get("user"));
+                    userPar = "userId="+user.id;
+                }
+                $('#pi_idPar').val(userPar);
+                initPersonInformation(userPar);
+                initPublishTopic(1, globalPageSize);
+                initReplyTopic(1, globalPageSize);
+                initPublishTopicCount();
+                initReplyTopicCount();
             }
         });
     </script>
@@ -23,9 +35,7 @@
 <div class="navBar">
     <div class="navBar-inner">
         <div class="container">
-            <a class="brand" href="/">
-                <img src="/public/images/logo.png">
-            </a>
+            <div class="brand"></div>
             <div id="search_form" class="navBar-search">
                 <input type="text" id="q" name="q" class="search-query left" value="">
                 <div class="navBar-searchBtn left"></div>
@@ -62,10 +72,11 @@
             <span>个人信息</span>
         </div>
         <div class="main-panel-body" style="padding:10;">
-            <img src="../res/img/staff_128.png" class="left">
+            <img id="pi_avatar" src="../res/img/staff_128.png" onerror="this.src='../res/img/staff_128.png'" style="width:128px;height:128px;" class="left">
             <div class="left" style="margin-left:50px;">
-                <div style="padding:10px 0px;"><span>Priputnev, Victor</span></div>
-                <div style="padding:10px 0px;"><span>渣打全球服务有限公司</span></div>
+                <input id="pi_idPar" type="hidden">
+                <div id="pi_name" style="padding:10px 0px;">Priputnev, Victor</div>
+                <div id="pi_companyName" style="padding:10px 0px;">渣打全球服务有限公司</div>
             </div>
             <div class="clear"></div>
         </div>
@@ -76,7 +87,7 @@
             <span>最近发布的帖子</span>
         </div>
         <div class="main-panel-body" style="padding:0;">
-            <div style="margin:0px; border-radius: 0 0 3px 3px;">
+            <div id="publishTopicsBody" style="margin:0px; border-radius: 0 0 3px 3px;">
                 <div class="main-panel-body-cell">
                     <img src="/res/img/staff_24.png" class="left" style="width:36px;height:36px;margin-top:6px;">
                     <span style="margin-left:10px;">abcdefg</span>
@@ -133,8 +144,11 @@
                     <a href="#" style="margin-left:10px;color:#888">区块链开发入门书籍和文档</a>
                     <span class="right" style="color:#888">2018-01-01</span>
                 </div>
-                <div id = "pagination1" class="pagination" style="margin: 10px 0 0 10px;"></div>
+
             </div>
+        </div>
+        <div class="main-panel-body" style="padding:10px 0px;border-top: 1px solid #f0f0f0;">
+            <div id="publishPagination" class="pagination" style="margin:0px 10px;display:none;"></div>
         </div>
 
         <div style="height:13px;"></div>
@@ -143,7 +157,7 @@
             <span>最近回复的帖子</span>
         </div>
         <div class="main-panel-body" style="padding:0;">
-            <div style="margin:0px; border-radius: 0 0 3px 3px;">
+            <div id="replyTopicsBody" style="margin:0px; border-radius: 0 0 3px 3px;">
                 <div class="main-panel-body-cell">
                     <img src="/res/img/staff_24.png" class="left" style="width:36px;height:36px;margin-top:6px;">
                     <span style="margin-left:10px;">abcdefg</span>
@@ -200,10 +214,13 @@
                     <a href="#" style="margin-left:10px;color:#888">区块链开发入门书籍和文档</a>
                     <span class="right" style="color:#888">2018-01-01</span>
                 </div>
-                <div id = "pagination2" class="pagination" style="margin: 10px 0 0 10px;"></div>
             </div>
         </div>
+        <div class="main-panel-body" style="padding:10px 0px;border-top: 1px solid #f0f0f0;">
+            <div id="replyPagination" class="pagination" style="margin:0px 10px;display:none;"></div>
+        </div>
     </div>
+
 
 </div>
 

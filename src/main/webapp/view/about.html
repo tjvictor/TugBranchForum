@@ -12,7 +12,8 @@
     <script type="text/javascript" src="../res/js/webCommon.js"></script>
     <script>
         $(function (){
-            checkUser();
+            if(checkUser()){
+            }
         });
     </script>
 </head>
@@ -20,9 +21,7 @@
 <div class="navBar">
     <div class="navBar-inner">
         <div class="container">
-            <a class="brand" href="/">
-                <img src="/public/images/logo.png">
-            </a>
+            <div class="brand"></div>
             <div id="search_form" class="navBar-search">
                 <input type="text" id="q" name="q" class="search-query left" value="">
                 <div class="navBar-searchBtn left"></div>

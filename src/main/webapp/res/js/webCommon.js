@@ -149,3 +149,6 @@ function showToday() {
     return date;
 }
 
+function getStringWithQuotation(param){
+    return "'"+param+"'";
+}

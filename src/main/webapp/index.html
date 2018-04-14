@@ -15,8 +15,8 @@
         $(function (){
             if(checkUser()){
                 initTopicCategory();
-                getTopicListByCategory('', 1, 10);
-
+                getTopicListByCategory('', 1, globalPageSize);
+                getTopicCountByCategory('');
             }
         });
     </script>
@@ -25,9 +25,7 @@
 <div class="navBar">
     <div class="navBar-inner">
         <div class="container">
-            <a class="brand" href="/">
-                <img src="/public/images/logo.png">
-            </a>
+            <div class="brand"></div>
             <div id="search_form" class="navBar-search">
                 <input type="text" id="q" name="q" class="search-query left" value="">
                 <div class="navBar-searchBtn left"></div>
@@ -62,48 +60,13 @@
     </div>
     <div class="main-leftPanel">
         <div id="category-tab" class="main-panel-header">
-            <a class="main-panel-header-tab main-panel-header-current-tab">全部</a>
-            <a class="main-panel-header-tab">新手入门</a>
-            <a class="main-panel-header-tab">分享</a>
-            <a class="main-panel-header-tab">比特币</a>
-            <a class="main-panel-header-tab">以太坊</a>
         </div>
         <div class="main-panel-body" style="padding:0;">
             <div id="topicListBody" style="margin:0px; border-radius: 0 0 3px 3px;">
-                <div class="main-panel-body-cell">
-                    <img src="/res/img/staff_24.png" class="left" style="width:36px;height:36px;margin-top:6px;">
-                    <span style="margin-left:10px;">abcdefg</span>
-                    <span style="color: #9e78c0;font-size: 12px">10</span>
-                    <span style="margin: 0 -3px;">/</span>
-                    <span style="color: #b4b4b4;font-size: 12px">1000</span>
-                    <span style="background-color:grey; padding:2px 6px 2px 4px; border-radius:3px;color:#fff;font-size:14px;">分类</span>
-                    <span style="background-color:blue; padding:2px 6px 2px 4px; border-radius:3px;color:#fff;font-size:14px;">置顶</span>
-                    <span style="background-color:purple; padding:2px 6px 2px 4px; border-radius:3px;color:#fff;font-size:14px;">申精</span>
-                    <span style="background-color:#80bd01; padding:2px 6px 2px 4px; border-radius:3px;color:#fff;font-size:14px;">已解决</span>
-                    <span style="background-color:red; padding:2px 6px 2px 4px; border-radius:3px;color:#fff;font-size:14px;">待解决</span>
-                    <a href="#" style="margin-left:10px;color:#888">区块链开发入门书籍和文档</a>
-                    <span class="right" style="color:#888">2018-01-01</span>
-                </div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div class="main-panel-body-cell">asdfasdfasdf</div>
-                <div id = "pagination" class="pagination" style="margin: 10px 0 0 10px;"></div>
             </div>
+        </div>
+        <div class="main-panel-body" style="padding:10px 0px;border-top: 1px solid #f0f0f0;">
+            <div id="pagination" class="pagination" style="margin:0px 10px;display:none;"></div>
         </div>
     </div>
 </div>

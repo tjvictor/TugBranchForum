@@ -250,6 +250,24 @@ public class webServices {
         }
     }
 
+    @RequestMapping(value = "/editTopic", method = RequestMethod.POST)
+    public ResponseObject editTopic(@RequestParam("title") String title, @RequestParam("content") String content,
+                                   @RequestParam("topicId") String topicId, @RequestParam("categoryId") String categoryId) {
+        try {
+
+            Topic item = topicDaoImp.getTopicById(topicId, false);
+            item.setTitle(title);
+            item.setContent(content);
+            item.setCategoryId(categoryId);
+
+            topicDaoImp.editTopic(item);
+            return new ResponseObject("ok", "更新成功", item.getId());
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
     @RequestMapping(value = "/addReplyTopic", method = RequestMethod.POST)
     public ResponseObject addReplyTopic(@RequestParam("topicId") String topicId, @RequestParam("content") String content,
                                    @RequestParam("staffId") String staffId, @RequestParam("topicCreateTime") String topicCreateTime) {
@@ -291,12 +309,13 @@ public class webServices {
     }
 
     @RequestMapping(value = "/getTopicListByCategory", method = RequestMethod.GET)
-    public ResponseObject getTopicListByCategory(@RequestParam("categoryId") String categoryId,
+    public ResponseObject getTopicListByCategory(@RequestParam("title") String title,
+                                                 @RequestParam("categoryId") String categoryId,
                                                  @RequestParam("pageNumber") int pageNumber,
                                                  @RequestParam("pageSize") int pageSize) {
         try {
 
-            List<Topic> items = topicDaoImp.getTopicListByCategory(categoryId, pageNumber, pageSize);
+            List<Topic> items = topicDaoImp.getTopicListByCategory(title, categoryId, pageNumber, pageSize);
             return new ResponseObject("ok", "查询成功", items);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -305,10 +324,11 @@ public class webServices {
     }
 
     @RequestMapping(value = "/getTopicCountByCategory", method = RequestMethod.GET)
-    public ResponseObject getTopicCountByCategory(@RequestParam("categoryId") String categoryId) {
+    public ResponseObject getTopicCountByCategory(@RequestParam("title") String title,
+                                                  @RequestParam("categoryId") String categoryId) {
         try {
 
-            int count = topicDaoImp.getTopicCountByCategory(categoryId);
+            int count = topicDaoImp.getTopicCountByCategory(title, categoryId);
             return new ResponseObject("ok", "查询成功", count);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -458,5 +478,18 @@ public class webServices {
             return new ResponseObject("error", "系统错误，请联系系统管理员");
         }
     }
+
+    @RequestMapping(value = "/checkUserPermission", method = RequestMethod.GET)
+    public ResponseObject checkUserPermission(@RequestParam("topicId") String topicId,
+                                              @RequestParam("userId") String userId) {
+        try {
+            Topic item =  topicDaoImp.checkUserPermission(topicId, userId);
+            return new ResponseObject("ok", "查询成功", item);
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            return new ResponseObject("error", "系统错误，请联系系统管理员");
+        }
+    }
+
     //endregion
 }

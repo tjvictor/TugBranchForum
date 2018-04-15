@@ -14,14 +14,19 @@ function getTopicCategoryCallback(data){
         function(event){
             $('#category-tab .main-panel-header-tab').removeClass('main-panel-header-current-tab');
             $(event.target).addClass('main-panel-header-current-tab');
-            getTopicListByCategory($(event.target).attr('data-value'), 1, globalPageSize);
-            getTopicCountByCategory($(event.target).attr('data-value'));
+            getTopicListByCategory($('#globalTopicTitleTxt').val().trim(), $(event.target).attr('data-value'), 1, globalPageSize);
+            getTopicCountByCategory($('#globalTopicTitleTxt').val().trim(), $(event.target).attr('data-value'));
         }
     );
 }
 
-function getTopicListByCategory(categoryId, pageNumber, pageSize){
-    var param = "categoryId="+categoryId+"&pageNumber="+pageNumber+"&pageSize="+pageSize;
+function globalTopicSearch(){
+    getTopicListByCategory($('#globalTopicTitleTxt').val().trim(), $('.main-panel-header-current-tab').attr('data-value'), 1, globalPageSize);
+    getTopicCountByCategory($('#globalTopicTitleTxt').val().trim(), $('.main-panel-header-current-tab').attr('data-value'));
+}
+
+function getTopicListByCategory(title, categoryId, pageNumber, pageSize){
+    var param = "title="+title+"&categoryId="+categoryId+"&pageNumber="+pageNumber+"&pageSize="+pageSize;
     callAjax('/websiteService/getTopicListByCategory', '', 'getTopicListByCategoryCallback', '', '', param, '');
 }
 function getTopicListByCategoryCallback(data){
@@ -59,8 +64,8 @@ function getTopicListByCategoryCallback(data){
     }
 }
 
-function getTopicCountByCategory(categoryId){
-    var param = "categoryId="+categoryId;
+function getTopicCountByCategory(title, categoryId){
+    var param = "title="+title+"&categoryId="+categoryId;
     callAjax('/websiteService/getTopicCountByCategory', '', 'getTopicCountByCategoryCallback', '', '', param, '');
 }
 function getTopicCountByCategoryCallback(data){
@@ -75,6 +80,5 @@ function getTopicCountByCategoryCallback(data){
 }
 
 function topicPaginationChange(pageNumber, pageSize){
-    var param = "categoryId="+$('.main-panel-header-current-tab').attr('data-value')+"&pageNumber="+pageNumber+"&pageSize="+pageSize;
-    callAjax('/websiteService/getTopicListByCategory', '', 'getTopicListByCategoryCallback', '', '', param, '');
+    getTopicListByCategory($('#globalTopicTitleTxt').val().trim(), $('.main-panel-header-current-tab').attr('data-value'), pageNumber, pageSize);
 }

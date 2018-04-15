@@ -8,15 +8,15 @@
     <link rel="stylesheet" type="text/css" href="res/css/webDefault.css">
     <link rel="stylesheet" type="text/css" href="res/pagination/pagination.css">
     <script type="text/javascript" src="res/pagination/pagination.js"></script>
-    <script type="text/javascript" src="../res/js/js.cookie.js"></script>
+    <script type="text/javascript" src="res/js/js.cookie.js"></script>
     <script type="text/javascript" src="res/js/webCommon.js"></script>
     <script type="text/javascript" src="res/js/index.js"></script>
     <script>
         $(function (){
             if(checkUser()){
                 initTopicCategory();
-                getTopicListByCategory('', 1, globalPageSize);
-                getTopicCountByCategory('');
+                getTopicListByCategory('', '', 1, globalPageSize);
+                getTopicCountByCategory('', '');
             }
         });
     </script>
@@ -27,8 +27,8 @@
         <div class="container">
             <div class="brand"></div>
             <div id="search_form" class="navBar-search">
-                <input type="text" id="q" name="q" class="search-query left" value="">
-                <div class="navBar-searchBtn left"></div>
+                <input type="text" id="globalTopicTitleTxt" name="globalTopicTitleTxt" class="search-query left" value="">
+                <div class="navBar-searchBtn left" onclick="globalTopicSearch()"></div>
             </div>
             <ul class="nav pull-right">
                 <li><a href="/index.html">首页</a></li>

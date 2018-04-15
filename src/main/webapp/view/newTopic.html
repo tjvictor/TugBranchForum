@@ -20,6 +20,16 @@
             if(checkUser()){
                 initTopicKindeditor('600');
                 initTopicCategory();
+                var topicPar = window.location.search.substring(1);
+                if(topicPar){
+                    var user = jQuery.parseJSON(Cookies.get("user"));
+                    checkUserPermission(topicPar, user.id);
+                    $('#tp_id').val(topicPar.replace('topicId=', ''));
+                    $('#newTopicBtn').css('display','none');
+                }else{
+                    $('#editTopicBtn').css('display','none');
+                }
+
             }
         });
     </script>
@@ -29,10 +39,10 @@
     <div class="navBar-inner">
         <div class="container">
             <div class="brand"></div>
-            <div id="search_form" class="navBar-search">
+            <!--<div id="search_form" class="navBar-search">
                 <input type="text" id="q" name="q" class="search-query left" value="">
                 <div class="navBar-searchBtn left"></div>
-            </div>
+            </div>-->
             <ul class="nav pull-right">
                 <li><a href="/index.html">首页</a></li>
                 <li><a href="/view/about.html" target="">关于</a></li>
@@ -63,6 +73,7 @@
     <div class="main-leftPanel">
         <div id="reply-body" style="margin-top:10px;">
             <div class="main-panel-header">
+                <input id="tp_id" type="hidden">
                 <span>标题: </span>
                 <input id="titleTxt" type="text" style="font-size:14px;width:500px;border-radius:5px;height:30px;margin:0px 10px;border:1px solid grey">
                 <span>分类: </span>
@@ -75,7 +86,8 @@
             </div>
 
             <div class="main-panel-header">
-                <input type="button" value="提交" onclick="addTopic()" style="font-size:14px;width:100px;background-color:#0C6EAB;color:white;border-radius:5px;height:30px;cursor: pointer;">
+                <input id="newTopicBtn" type="button" value="提交" onclick="addTopic()" style="font-size:14px;width:100px;background-color:#0C6EAB;color:white;border-radius:5px;height:30px;cursor: pointer;">
+                <input id="editTopicBtn" type="button" value="提交" onclick="editTopic()" style="font-size:14px;width:100px;background-color:#0C6EAB;color:white;border-radius:5px;height:30px;cursor: pointer;">
             </div>
         </div>
     </div>

@@ -96,7 +96,12 @@ function bindEditTopicBody(topic) {
     else topic_body += ' <span style="background-color:red; padding:2px 6px 2px 4px; border-radius:3px;color:#fff;font-size:14px;">待解决</span>';
     if (topic.status == 2) topic_body += ' <span style="background-color:green; padding:2px 6px 2px 4px; border-radius:3px;color:yellow;font-size:14px;">已结贴</span>';
 
-    topic_body += ' <a target="_blank" href="#" class="right" style="color:blue;margin-left:20px;">编辑</a>';
+    if(topic.status == 2)
+        topic_body += ' <a class="right" style="color:grey;margin-left:5px;cursor:default;">结贴</a>';
+    else
+        topic_body += ' <a target="_blank" href="#" class="right" style="color:green;margin-left:5px;">结贴</a>';
+    topic_body += ' <a target="_blank" href="#" class="right" style="color:red;margin-left:5px;">删除</a>';
+    topic_body += ' <a target="_blank" href="/view/newTopic.html?topicId='+topic.id+'" class="right" style="color:blue;margin-left:20px;">编辑</a>';
     topic_body += ' <span class="right" style="color:#888">' + topic.createTime.substring(0, 10) + '</span>';
     topic_body += '</div>';
     return topic_body;

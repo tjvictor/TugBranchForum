@@ -9,6 +9,7 @@ import tugbranch.forum.model.Topic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -29,9 +30,9 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
 
     @Override
     public void addTopic(Topic item) throws SQLException {
-        try (Connection connection = DriverManager.getConnection(dbConnectString)){
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             String insertSql = "insert into Topic values(?,?,?,?,?,?,?,?,?,?,?,?);";
-            try(PreparedStatement ps = connection.prepareStatement(insertSql)) {
+            try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
                 int i = 1;
                 ps.setString(i++, item.getId());
                 ps.setString(i++, item.getTitle());
@@ -51,10 +52,25 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
     }
 
     @Override
+    public void editTopic(Topic item) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            String insertSql = "UPDATE Topic SET Title = ?, Content = ?, CategoryId = ? WHERE Id = ? ";
+            try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
+                int i = 1;
+                ps.setString(i++, item.getTitle());
+                ps.setString(i++, item.getContent());
+                ps.setString(i++, item.getCategoryId());
+                ps.setString(i++, item.getId());
+                ps.executeUpdate();
+            }
+        }
+    }
+
+    @Override
     public void addReplyTopic(ReplyTopic item) throws SQLException {
-        try (Connection connection = DriverManager.getConnection(dbConnectString)){
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             String insertSql = "insert into ReplyTopic values(?,?,?,?,?,?,?);";
-            try(PreparedStatement ps = connection.prepareStatement(insertSql)) {
+            try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
                 int i = 1;
                 ps.setString(i++, item.getId());
                 ps.setString(i++, item.getTopicId());
@@ -101,9 +117,9 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
 
     @Override
     public void updateTopicViewCountById(String topicId) throws SQLException {
-        try (Connection connection = DriverManager.getConnection(dbConnectString)){
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             String insertSql = String.format("update Topic set ViewCount=ViewCount+1 where Id = '%s';", topicId);
-            try(PreparedStatement ps = connection.prepareStatement(insertSql)) {
+            try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
                 ps.executeUpdate();
             }
         }
@@ -111,9 +127,9 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
 
     @Override
     public void updateTopicReplyCountById(String topicId) throws SQLException {
-        try (Connection connection = DriverManager.getConnection(dbConnectString)){
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             String insertSql = String.format("update Topic set ReplyCount=ReplyCount+1 where Id = '%s';", topicId);
-            try(PreparedStatement ps = connection.prepareStatement(insertSql)) {
+            try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
                 ps.executeUpdate();
             }
         }
@@ -121,9 +137,9 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
 
     @Override
     public void updateTopicPropertyById(String topicId, String property, int status) throws SQLException {
-        try (Connection connection = DriverManager.getConnection(dbConnectString)){
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             String insertSql = String.format("update Topic set %s=%s where Id = '%s';", property, status, topicId);
-            try(PreparedStatement ps = connection.prepareStatement(insertSql)) {
+            try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
                 ps.executeUpdate();
             }
         }
@@ -133,7 +149,7 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
     public List<ReplyTopic> getReplyTopicsByTopicId(String topicId, int pageNumber, int pageSize) throws SQLException {
         List<ReplyTopic> items = new ArrayList<ReplyTopic>();
 
-        String selectSql = String.format("SELECT Id, TopicId, Content, StaffId, Resolved, CreateTime, Orders FROM ReplyTopic where TopicId = '%s' order by orders asc limit %s,%s", topicId, (pageNumber-1)*pageSize, pageSize);
+        String selectSql = String.format("SELECT Id, TopicId, Content, StaffId, Resolved, CreateTime, Orders FROM ReplyTopic where TopicId = '%s' order by orders asc limit %s,%s", topicId, (pageNumber - 1) * pageSize, pageSize);
 
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
@@ -159,12 +175,14 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
     }
 
     @Override
-    public List<Topic> getTopicListByCategory(String categoryId, int pageNumber, int pageSize) throws SQLException {
+    public List<Topic> getTopicListByCategory(String title, String categoryId, int pageNumber, int pageSize) throws SQLException {
         List<Topic> items = new ArrayList<Topic>();
-        String whereSql = "";
-        if(StringUtils.isNotEmpty(categoryId))
-            whereSql = String.format(" where CategoryId = '%s'", categoryId);
-        String selectSql = String.format("SELECT Id, Title, Content, StaffId, ViewCount, ReplyCount, CategoryId, Status, PutTop, Resolved, Essence, CreateTime FROM Topic %s order by CreateTime desc limit %s,%s", whereSql, (pageNumber-1)*pageSize, pageSize);
+        String whereSql = " where 1=1 ";
+        if (StringUtils.isNotEmpty(categoryId))
+            whereSql = String.format(" %s and CategoryId = '%s'", whereSql, categoryId);
+        if (StringUtils.isNotEmpty(title))
+            whereSql = String.format(" %s and Title like '%s'", whereSql, "%" + title + "%");
+        String selectSql = String.format("SELECT Id, Title, Content, StaffId, ViewCount, ReplyCount, CategoryId, Status, PutTop, Resolved, Essence, CreateTime FROM Topic %s order by CreateTime desc limit %s,%s", whereSql, (pageNumber - 1) * pageSize, pageSize);
 
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
@@ -196,10 +214,12 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
     }
 
     @Override
-    public int getTopicCountByCategory(String categoryId) throws SQLException {
-        String whereSql = "";
-        if(StringUtils.isNotEmpty(categoryId))
-            whereSql = String.format(" where CategoryId = '%s'", categoryId);
+    public int getTopicCountByCategory(String title, String categoryId) throws SQLException {
+        String whereSql = " where 1=1 ";
+        if (StringUtils.isNotEmpty(categoryId))
+            whereSql = String.format(" %s and CategoryId = '%s'", whereSql, categoryId);
+        if (StringUtils.isNotEmpty(title))
+            whereSql = String.format(" %s and Title like '%s'", whereSql, "%" + title + "%");
 
         String selectSql = String.format("SELECT count(0) FROM Topic %s", whereSql);
 
@@ -236,7 +256,7 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
     @Override
     public List<Topic> getPublicTopicsByUserId(String userId, int pageNumber, int pageSize) throws SQLException {
         List<Topic> items = new ArrayList<Topic>();
-        String selectSql = String.format("SELECT Id, Title, Content, StaffId, ViewCount, ReplyCount, CategoryId, Status, PutTop, Resolved, Essence, CreateTime FROM Topic where StaffId = '%s' order by CreateTime desc limit %s,%s", userId, (pageNumber-1)*pageSize, pageSize);
+        String selectSql = String.format("SELECT Id, Title, Content, StaffId, ViewCount, ReplyCount, CategoryId, Status, PutTop, Resolved, Essence, CreateTime FROM Topic where StaffId = '%s' order by CreateTime desc limit %s,%s", userId, (pageNumber - 1) * pageSize, pageSize);
 
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
@@ -287,7 +307,7 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
     @Override
     public List<Topic> getReplyTopicsByUserId(String userId, int pageNumber, int pageSize) throws SQLException {
         List<Topic> items = new ArrayList<Topic>();
-        String selectSql = String.format("SELECT distinct t.Id, t.Title, t.Content, t.StaffId, t.ViewCount, t.ReplyCount, t.CategoryId, t.Status, t.PutTop, t.Resolved, t.Essence, t.CreateTime FROM Topic t JOIN ReplyTopic r on t.Id = r.TopicId where r.StaffId = '%s' order by t.CreateTime desc limit %s,%s", userId, (pageNumber-1)*pageSize, pageSize);
+        String selectSql = String.format("SELECT distinct t.Id, t.Title, t.Content, t.StaffId, t.ViewCount, t.ReplyCount, t.CategoryId, t.Status, t.PutTop, t.Resolved, t.Essence, t.CreateTime FROM Topic t JOIN ReplyTopic r on t.Id = r.TopicId where r.StaffId = '%s' order by t.CreateTime desc limit %s,%s", userId, (pageNumber - 1) * pageSize, pageSize);
 
         try (Connection connection = DriverManager.getConnection(dbConnectString)) {
             try (Statement stmt = connection.createStatement()) {
@@ -333,5 +353,22 @@ public class TopicDaoImp extends BaseDao implements TopicDao {
         }
 
         return 0;
+    }
+
+    @Override
+    public Topic checkUserPermission(String topicId, String userId) throws SQLException {
+        String selectSql = String.format("SELECT Id FROM Topic WHERE Id = '%s' and StaffId = '%s'", topicId, userId);
+
+        try (Connection connection = DriverManager.getConnection(dbConnectString)) {
+            try (Statement stmt = connection.createStatement()) {
+                try (ResultSet rs = stmt.executeQuery(selectSql)) {
+                    if (rs.next()) {
+                        return getTopicById(topicId, false);
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }

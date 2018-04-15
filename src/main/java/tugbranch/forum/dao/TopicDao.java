@@ -10,6 +10,8 @@ public interface TopicDao {
 
     void addTopic(Topic item) throws SQLException;
 
+    void editTopic(Topic item) throws SQLException;
+
     void addReplyTopic(ReplyTopic item) throws SQLException;
 
     Topic getTopicById(String topicId, boolean topicReply) throws SQLException;
@@ -22,9 +24,9 @@ public interface TopicDao {
 
     List<ReplyTopic> getReplyTopicsByTopicId(String topicId, int pageNumber, int pageSize) throws SQLException;
 
-    List<Topic> getTopicListByCategory(String categoryId, int pageNumber, int pageSize) throws SQLException;
+    List<Topic> getTopicListByCategory(String title, String categoryId, int pageNumber, int pageSize) throws SQLException;
 
-    int getTopicCountByCategory(String categoryId) throws SQLException;
+    int getTopicCountByCategory(String title, String categoryId) throws SQLException;
 
     int getReplyTopicCountByTopicId(String topicId) throws SQLException;
 
@@ -35,4 +37,6 @@ public interface TopicDao {
     List<Topic> getReplyTopicsByUserId(String userId, int pageNumber, int pageSize) throws SQLException;
 
     int getReplyTopicCountByUserId(String userId) throws SQLException;
+
+    Topic checkUserPermission(String topicId, String userId) throws SQLException;
 }

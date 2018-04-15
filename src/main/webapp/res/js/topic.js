@@ -17,7 +17,7 @@ function initTopicKindeditor(height) {
 }
 
 function initTopicCategory(){
-    callAjax('/websiteService/getTopicCategory', '', 'getTopicCategoryCallback', '', '', '', '');
+    callAjax('/websiteService/getTopicCategory', '', 'getTopicCategoryCallback', '', '', '', '', false);
 }
 function getTopicCategoryCallback(data){
     if (data.status == "ok") {
@@ -50,6 +50,30 @@ function addTopic(){
     callAjax('/websiteService/addTopic', '', 'addTopicCallback', '', 'POST', postValue, '.window-page-mask');
 }
 function addTopicCallback(data){
+    if(data.status == "ok"){
+        window.location = '/view/topic.html?topicId='+data.callBackData;
+    }
+}
+
+function editTopic(){
+    var title = $('#titleTxt').val();
+    if($.trim(title) == ""){
+        alert('标题不能为空');
+        return;
+    }
+    var content = replyKindeditor.html();
+    var categoryId = $("#topicCategorySelect").val();
+
+    var postValue = {
+        "topicId": $("#tp_id").val(),
+        "title": title,
+        "content": content,
+        "categoryId": categoryId,
+    };
+
+    callAjax('/websiteService/editTopic', '', 'editTopicCallback', '', 'POST', postValue, '.window-page-mask');
+}
+function editTopicCallback(data){
     if(data.status == "ok"){
         window.location = '/view/topic.html?topicId='+data.callBackData;
     }
@@ -170,5 +194,21 @@ function addReplyTopic(){
 function addReplyTopicCallback(data){
     if(data.status == "ok"){
         window.location = '/view/topic.html?topicId='+data.callBackData;
+    }
+}
+
+function checkUserPermission(topicPar, userId){
+    var param = topicPar + "&userId="+userId
+    callAjax('/websiteService/checkUserPermission', '', 'checkUserPermissionCallback', '', '', param, '.window-page-mask', false);
+}
+function checkUserPermissionCallback(data){
+    if(data.status == "ok"){
+        if(data.callBackData){
+            $('#titleTxt').val(data.callBackData.title);
+            $('#topicCategorySelect').val(data.callBackData.categoryId);
+            replyKindeditor.html(data.callBackData.content);
+        }else{
+            //无权编辑此帖子
+        }
     }
 }

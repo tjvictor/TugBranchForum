@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script type="text/javascript" src="res/js/jquery-1.11.2.js"></script>
+    <link rel="stylesheet" type="text/css" href="res/css/webDefault.css">
     <link rel="stylesheet" type="text/css" href="res/kindeditor/themes/default/default.css">
     <link rel="stylesheet" type="text/css" href="res/pagination/pagination.css">
     <script charset="utf-8" type="text/javascript" src="res/kindeditor/kindeditor-all-min.js"></script>
@@ -17,6 +18,7 @@
         $(function (){
             notifyKindeditor = KindEditor.create('#testing', {
                 items : ['singlefile','singlevideo', 'singleaudio','singleimg'],
+                height: "1600px",
             });
 
             createPagination('pagination', 1, 10, 273, selectPageFunction);
@@ -72,5 +74,22 @@
     <input id="singlevideoInput" type="file" name="singlevideoInput" onchange="kindeditorFileUploading('singlevideoInput', notifyKindeditor, 'video');" style="display:none;">
     <input id="singleaudioInput" type="file" name="singleaudioInput" onchange="kindeditorFileUploading('singleaudioInput', notifyKindeditor, 'audio');" style="display:none;">
     <div id="pagination" class="pagination"></div>
+
+    <div style="width:100%;height:100%;position:fixed;top:0;left:0;z-index:9911;background-color:rgba(0,0,0,0);">
+        <div style="border:1px solid ##95B8E7;padding: 5px;border-radius: 5px;width:300px;height:150px;position:relative;top:40%;background:-webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 20%);margin: 0 auto;">
+            <div style="width:100%;height:20px;">
+                <span>Title</span>
+            </div>
+            <div style="background-color:white;width:288px;padding:10px;height:60px;">
+                <div style="">
+
+                </div>
+                <div style="">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

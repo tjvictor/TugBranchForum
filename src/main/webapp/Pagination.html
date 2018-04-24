@@ -46,9 +46,10 @@
         }
     </style>
     <script>
+        var globalPageTab = 5;
         $(function(){
-            createPagination('pagination1', 1,10,273,selectPageFunction);
-            createPagination('pagination2', 1,10,73,selectPageFunction);
+            createPagination('pagination1', 1,10,300,selectPageFunction);
+            createPagination('pagination2', 1,10,301,selectPageFunction);
         });
 
         function createPagination(objId, pageNumber, pageSize, totalNumber, onSelectPageFunction){
@@ -62,18 +63,13 @@
             content += '    <li id="page_1">';
             content += '        <span class="active">1</span>';
             content += '    </li>';
-            content += '    <li id="page_2">';
-            content += '        <span>2</span>';
-            content += '    </li>';
-            content += '    <li id="page_3">';
-            content += '        <span>3</span>';
-            content += '    </li>';
-            content += '    <li id="page_4">';
-            content += '        <span>4</span>';
-            content += '    </li>';
-            content += '    <li id="page_5">';
-            content += '        <span>5</span>';
-            content += '    </li>';
+
+            for(var index = 2; index <= globalPageTab; index++){
+                content += '    <li id="page_'+index+'">';
+                content += '        <span>'+index+'</span>';
+                content += '    </li>';
+            }
+
             content += '    <li  id="page_next">';
             content += '        <span title="下一页">></span>';
             content += '    </li>';
@@ -99,62 +95,26 @@
             $(obj+' #page_last').on("click", function(){
                 onSelectPageFunction(maxPageNumber, pageSize);
                 setCurrentPageClass(obj, maxPageNumber);
-                initPagination(obj, maxPageNumber-maxPageNumber%5+1, pageSize, totalNumber, onSelectPageFunction);
+                var firstPage = maxPageNumber%globalPageTab==0?globalPageTab-1:maxPageNumber%globalPageTab+1;
+                initPagination(obj, maxPageNumber-firstPage, pageSize, totalNumber, onSelectPageFunction);
             });
 
-            if(pageNumber <= maxPageNumber){
-                $(obj+' #page_1 span').text(pageNumber);
-                $(obj+' #page_1').on("click", function(){
-                    onSelectPageFunction(pageNumber, pageSize);
-                    setCurrentPageClass(obj, pageNumber);
-                });
-                $(obj+' #page_1').css('display','block');
-            }else
-                $(obj+' #page_1').css('display','none');
+            for(var indexTab = 1; indexTab <= globalPageTab; indexTab++){
+                if((pageNumber+indexTab-1) <= maxPageNumber){
+                    $(obj+' #page_'+indexTab+' span').text(pageNumber+indexTab-1);
+                    $(obj+' #page_'+indexTab).on("click", pageNumber+indexTab-1, function(event){
+                        onSelectPageFunction(event.data, pageSize);
+                        setCurrentPageClass(obj, event.data);
+                    });
+                    $(obj+' #page_'+indexTab).css('display','block');
+                }else
+                    $(obj+' #page_'+indexTab).css('display','none');
 
-            if(pageNumber+1 <= maxPageNumber){
-                $(obj+' #page_2 span').text(pageNumber+1);
-                $(obj+' #page_2').on("click", function(){
-                    onSelectPageFunction(pageNumber+1, pageSize);
-                    setCurrentPageClass(obj, pageNumber+1);
-                });
-                $(obj+' #page_2').css('display','block');
-            }else
-                $(obj+' #page_2').css('display','none');
-
-            if(pageNumber+2 <= maxPageNumber){
-                $(obj+' #page_3 span').text(pageNumber+2);
-                $(obj+' #page_3').on("click", function(){
-                    onSelectPageFunction(pageNumber+2, pageSize);
-                    setCurrentPageClass(obj, pageNumber+2);
-                });
-                $(obj+' #page_3').css('display','block');
-            }else
-                $(obj+' #page_3').css('display','none');
-
-            if(pageNumber+3 <= maxPageNumber){
-                $(obj+' #page_4 span').text(pageNumber+3);
-                $(obj+' #page_4').on("click", function(){
-                    onSelectPageFunction(pageNumber+3, pageSize);
-                    setCurrentPageClass(obj, pageNumber+3);
-                });
-                $(obj+' #page_4').css('display','block');
-            }else
-                $(obj+' #page_4').css('display','none');
-
-            if(pageNumber+4 <= maxPageNumber){
-                $(obj+' #page_5 span').text(pageNumber+4);
-                $(obj+' #page_5').on("click", function(){
-                    onSelectPageFunction(pageNumber+4, pageSize);
-                    setCurrentPageClass(obj, pageNumber+4);
-                });
-                $(obj+' #page_5').css('display','block');
-            }else
-                $(obj+' #page_5').css('display','none');
+            }
 
             if(pageNumber==1){
                 $(obj+' #page_previous').css('display','none');
-                if(maxPageNumber>5){
+                if(maxPageNumber>globalPageTab){
                     $(obj + ' #page_next').css('display', 'block');
                     $(obj + ' #page_next').on("click",
                     function() {
@@ -163,11 +123,11 @@
                     });
                 } else
                     $(obj + ' #page_next').css('display', 'none');
-            }else if(pageNumber+5>=maxPageNumber){
+            }else if(pageNumber+globalPageTab>=maxPageNumber){
                 $(obj+' #page_previous').css('display','block');
                 $(obj+' #page_next').css('display','none');
                 $(obj+' #page_previous').on("click", function(){
-                    setCurrentPageClass(obj, 5);
+                    setCurrentPageClass(obj, globalPageTab);
                     previousPagination(obj, pageNumber, pageSize, totalNumber, onSelectPageFunction);
                 });
             }else{
@@ -178,27 +138,27 @@
                     nextPagination(obj, pageNumber, pageSize, totalNumber, onSelectPageFunction);
                 });
                 $(obj+' #page_previous').on("click", function(){
-                    setCurrentPageClass(obj, 5);
+                    setCurrentPageClass(obj, globalPageTab);
                     previousPagination(obj, pageNumber, pageSize, totalNumber, onSelectPageFunction);
                 });
             }
         }
 
         function nextPagination(obj, pageNumber, pageSize, totalNumber, onSelectPageFunction){
-            onSelectPageFunction(pageNumber+5, pageSize);
-            initPagination(obj, pageNumber+5, pageSize, totalNumber, onSelectPageFunction);
+            onSelectPageFunction(pageNumber+globalPageTab, pageSize);
+            initPagination(obj, pageNumber+globalPageTab, pageSize, totalNumber, onSelectPageFunction);
         }
 
         function previousPagination(obj, pageNumber, pageSize, totalNumber, onSelectPageFunction){
             onSelectPageFunction(pageNumber-1, pageSize);
-            initPagination(obj, pageNumber-5, pageSize, totalNumber, onSelectPageFunction);
+            initPagination(obj, pageNumber-globalPageTab, pageSize, totalNumber, onSelectPageFunction);
         }
 
         function setCurrentPageClass(obj, pageNumber){
             $(obj+' ul li span').removeClass('active');
-            var index = pageNumber%5;
+            var index = pageNumber%globalPageTab;
             if(index==0){
-                $(obj+' #page_5 span').addClass('active');
+                $(obj+' #page_'+globalPageTab+' span').addClass('active');
             }
             else{
                 $(obj+' #page_'+index+' span').addClass('active');

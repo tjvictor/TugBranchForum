@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plugin</title>
+    <script type="text/javascript" src="res/js/jquery-1.11.2.js"></script>
+    <link rel="stylesheet" type="text/css" href="res/css/webDefault.css">
+    <script>
+        $.extend({
+
+            showMessage: {},
+
+            helloWorld: function (name) {
+                return 'Hello ' + name;
+            },
+
+            goodMorning: function (){
+                return $.helloWorld(this.showMessage);
+            }
+        });
+
+        $.fn.sayHello = function (name) { return 'Hello ' + name; };
+        $.fn.sayHey = function (name) { return 'Hey ' + name; };
+
+        $.fn.extend({
+
+            sayNo: function (name) { return 'No ' + name; } ,
+
+            sayWow: function (name) { return 'Wow ' + name; }
+
+        });
+
+
+        ;
+        (function($){
+
+            var messager = {
+                showNew: function(message) { alert('Create in {} '+message); }
+            };
+
+            messager.show = function(message) { alert(message); };
+
+            $.Messager = messager;
+
+        })(jQuery);
+
+        ;
+        (function($){
+
+            var obj_messager = {};
+
+            obj_messager.show = function(message) { alert(message); };
+
+            $.fn.Message = function (message){
+
+                obj_messager.show(message);
+
+            };
+
+            $.fn.Message.dialog = function (action) {
+
+            };
+
+        })(jQuery);
+
+        ;
+        (function($){
+
+            var obj_messager1 = function (message) { this.options = message; };
+
+            obj_messager1.prototype = {
+                show: function(message) { alert(message); }
+            }
+
+            $.fn.Message1 = function (message){
+
+                var obj = new obj_messager1(message);
+
+                obj.show(message);
+
+            };
+
+        })(jQuery);
+
+        ;
+        (function($){
+
+            var showMessage = function (message) { alert(message+' New'); };
+
+            $.MessagePar = showMessage;
+
+        })(jQuery);
+
+        function invoke(){
+
+            //$('#resultDiv').append($('div').sayHello('Bob'));
+            //$('#resultDiv').append($('div').sayHey('Bob'));
+            //$('#resultDiv').append($('div').sayNo('Bob'));
+            //$('#resultDiv').append($('div').sayWow('Bob'));
+
+            $.Messager.show('ddd');
+            $.Messager.showNew('ddd');
+            $.Messager.showNew.call(null, 'ddd');
+            $('#resultDiv').Message('aaa');
+            $('#resultDiv').Message1('hhh');
+
+            $.MessagePar('ggg');
+        }
+
+
+    </script>
+</head>
+<body>
+    <input type="button" value="invoke event" onclick="invoke()">
+    <div id="resultDiv"></div>
+</body>
+</html>

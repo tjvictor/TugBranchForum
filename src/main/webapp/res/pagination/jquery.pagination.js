@@ -11,7 +11,7 @@ var PaginationObj = function(ele, opt){
         totalNumber: 0,
         onSelectPage: function(pageNumber, pageSize){},
     },
-    this.options = $.extend({}, this.defaults, opt)
+    this.options = $.extend({}, this.defaults, opt);
 }
 
 PaginationObj.prototype = {

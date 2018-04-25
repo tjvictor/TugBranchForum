@@ -30,7 +30,13 @@
             });
 
             initMessageDialog();
+
+            $('#click_me_btn').on('click', showMe);
         });
+
+        function showMe(){
+            alert('ddd');
+        }
 
         function kindeditorFileUploading(fileElementId, kindeditorId, fileType) {
             $.ajaxFileUpload({
@@ -93,6 +99,7 @@
 </head>
 <body>
     <div id="pagination" class="pagination" data-options="pageNumber:1, pageSize:10, pageTabSize:5, totalNumber:50"></div>
+    <input type="button" value="Click Me" id="click_me_btn">
     <!--<input type="button" onclick="alertShow()" value="showAlert">
     <input type="button" onclick="confirmShow()" value="confirmShow">
     <textarea id="testing" name="testing" style="width:100%"></textarea>
@@ -132,8 +139,8 @@
                 <div class="clear"></div>
             </div>
         </div>
-    </div>-->
-
+    </div>
+    -->
 
 
 </body>

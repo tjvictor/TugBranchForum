@@ -32,48 +32,40 @@
             var messageDiv = function(ele, opt) {
                 this.$element = ele;
                 this.defaults = {
-                    'display':'none',
-                    'z-index':'9000',
-                    'background':'#F3F3F3',
-                    'opacity':'0.8',
-                    'position':'fixed',
-                    'left':'0',
-                    'top':'0',
-                    'width':'100%',
-                    'height':'100%'
+                    timeOut: 3000,
                 };
+                this.$element.removeClass();
+                this.$element.removeAttr("style");
+                this.$element.addClass('window-page-mask');
                 this.options = $.extend({}, this.defaults, opt);
                 this.$element.css(this.options);
             };
-
-
-
-            function buildPromptDialog(){
-
-            };
-
-
 
             messageDiv.prototype = {
 
                 alert: function (title, content){
                     this.buildAlertDialog(title, content);
-
-                    this.$element.show();
                 },
 
                 confirm: function (title, content, callback){
                     this.buildConfirmDialog(title, content, callback);
-
-                    this.$element.show();
                 },
 
                 wait: function(){
+                    this.$element.html('');
+                    this.$element.addClass('window-page-mask-background');
+                },
 
+                release: function(){
+                    this.$element.html('');
+                    this.$element.removeClass();
+                    this.$element.removeAttr("style");
                 },
 
                 prompt: function(title, content, timeOut){
-
+                    this.buildPromptDialog(title, content);
+                    var delay = timeOut?timeOut:this.defaults.timeOut;
+                    this.$element.delay(delay).hide(0);
                 },
 
                 buildAlertDialog: function (title, content){
@@ -100,12 +92,33 @@
                     template += '   </div>';
                     template += '   <div style="background-color:white;width:288px;padding:10px;">';
                     template += '       <div style="text-align: center;font-size: 14px;">'+content+'</div>';
-                    template += '       <div id="closeAlertBtn" style="margin: 0 auto;width:50px;border:1px solid #95B8E7;padding: 3px;border-radius: 5px;text-align: center;font-size: 14px;cursor: pointer;margin-top: 10px;">确定</div>';
+                    template += '       <div style="width:50%;float:left;">';
+                    template += '           <div id="confirmActionBtn" style="margin: 0 auto;width:50px;border:1px solid #95B8E7;padding: 3px;border-radius: 5px;text-align: center;font-size: 14px;cursor: pointer;margin-top: 10px;">确定</div>';
+                    template += '       </div>';
+                    template += '       <div style="width:50%;float:left;">';
+                    template += '           <div id="cancelActionBtn" style="margin: 0 auto;width:50px;border:1px solid #95B8E7;padding: 3px;border-radius: 5px;text-align: center;font-size: 14px;cursor: pointer;margin-top: 10px;">取消</div>';
+                    template += '       </div>';
+                    template += '       <div style="clear:both;"></div>';
                     template += '   </div>';
                     template += '</div>';
 
                     this.$element.html(template);
-                    $('#closeAlertBtn').on('click', {obj:this.$element, callback:callback}, this.affirm);
+                    $('#confirmActionBtn').on('click', {obj:this.$element, callback:callback}, this.affirm);
+                    $('#cancelActionBtn').on('click', this.$element, this.close);
+                },
+
+                buildPromptDialog: function (title, content){
+                    var template = '';
+                    template += '<div id="alertDialog" style="border:1px solid #95B8E7;padding: 5px;border-radius: 5px;width:300px;position:relative;top:30%;background:-webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 20%);margin: 0 auto;">';
+                    template += '   <div style="width:100%;height:25px;">';
+                    template += '       <span style="padding:5px;font-size:14px;">'+title+'</span>';
+                    template += '   </div>';
+                    template += '   <div style="background-color:white;width:288px;padding:10px;">';
+                    template += '       <div style="text-align: center;font-size: 14px;">'+content+'</div>';
+                    template += '   </div>';
+                    template += '</div>';
+
+                    this.$element.html(template);
                 },
 
                 close: function (event){
@@ -129,13 +142,21 @@
         })(jQuery);
 
         $(function (){
-            $('#messageDiv').messager().confirm('aaa','bbb', function(){alert('mmmm');});
+            //$('#messageDiv').messager().alert('aaa','bbb');
+            //$('#messageDiv').messager({'background-color':'rgba(0,0,0,0.2)'}).confirm('aaa','bbb', function(){$('#messageDiv1').messager().alert('aaa1','bbb1');});
+            //$('#messageDiv').messager({'background-color':'rgba(0,0,0,0.5)'}).wait();
+            //$('#messageDiv').messager().release();
+            //$('#messageDiv').messager().prompt('hhh', 'ttt', 5000);
+
+            $('#messageDiv').messager().prompt('hhh', 'ttt', 5000);
+            $('#messageDiv1').messager().prompt('hhh1', 'ttt1');
         });
     </script>
 </head>
 <body>
 
+    <input type="text" value="gggggggggg">
     <div id="messageDiv"></div>
-
+    <div id="messageDiv1"></div>
 </body>
 </html>

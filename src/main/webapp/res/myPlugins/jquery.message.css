@@ -2,7 +2,7 @@
 .window-page-mask{
 	z-index: 9911;
 	background : #F3F3F3;
-    opacity: 0.80;
+    background-color:rgba(0,0,0,0.2);
 	position: fixed;
 	left: 0;
 	top: 0;

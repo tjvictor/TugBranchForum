@@ -40,12 +40,10 @@ function initPublishTopicCount(){
 }
 function getPublicTopicCountByUserIdCallback(data){
     if(data.status == "ok"){
-        if(data.callBackData>0){
-            createPagination('publishPagination', 1, globalPageSize, data.callBackData, initPublishTopic);
-            $('#publishPagination').css('display','block');
-        }
-        else
-            $('#publishPagination').css('display','none');
+        $('#publishPagination').pagination({
+            totalNumber: data.callBackData,
+            onSelectPage: initPublishTopic,
+        });
     }
 }
 
@@ -73,12 +71,10 @@ function initReplyTopicCount(){
 }
 function getReplyTopicCountByUserIdCallback(data){
     if(data.status == "ok"){
-        if(data.callBackData>0){
-            createPagination('replyPagination', 1, globalPageSize, data.callBackData, initReplyTopic);
-            $('#replyPagination').css('display','block');
-        }
-        else
-            $('#replyPagination').css('display','none');
+        $('#replyPagination').pagination({
+            totalNumber: data.callBackData,
+            onSelectPage: initReplyTopic,
+        });
     }
 }
 

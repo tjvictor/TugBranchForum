@@ -160,12 +160,10 @@ function getReplyTopicCountByTopicId(topicPar){
 }
 function getReplyTopicCountByTopicIdCallback(data){
     if(data.status == "ok"){
-        if(data.callBackData>0){
-            createPagination('pagination', 1, globalPageSize, data.callBackData, replyTopicPaginationChange);
-            $('#pagination').css('display','block');
-        }
-        else
-            $('#pagination').css('display','none');
+        $('#pagination').pagination({
+            totalNumber: data.callBackData,
+            onSelectPage: replyTopicPaginationChange,
+        });
     }
 }
 

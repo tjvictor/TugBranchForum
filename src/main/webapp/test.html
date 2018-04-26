@@ -6,13 +6,16 @@
     <script type="text/javascript" src="res/js/jquery-1.11.2.js"></script>
     <link rel="stylesheet" type="text/css" href="res/css/webDefault.css">
     <link rel="stylesheet" type="text/css" href="res/kindeditor/themes/default/default.css">
-    <link rel="stylesheet" type="text/css" href="res/pagination/pagination.css">
+
     <script charset="utf-8" type="text/javascript" src="res/kindeditor/kindeditor-all-min.js"></script>
     <script charset="utf-8" type="text/javascript" src="res/kindeditor/lang/zh-CN.js"></script>
     <script type="text/javascript" src="res/js/js.cookie.js"></script>
     <script type="text/javascript" src="res/js/ajaxfileupload.js"></script>
     <script type="text/javascript" src="res/kindeditor/plugins/singleimg/singleimg.js"></script>
-    <script type="text/javascript" src="res/pagination/jquery.pagination.js"></script>
+    <script type="text/javascript" src="res/myPlugins/pagination/jquery.myPagination.js"></script>
+    <script type="text/javascript" src="res/myPlugins/message/jquery.myMessage.js"></script>
+    <link rel="stylesheet" type="text/css" href="res/myPlugins/pagination/jquery.myPagination.css">
+    <link rel="stylesheet" type="text/css" href="res/myPlugins/message/jquery.myMessage.css">
     <script>
         var notifyKindeditor;
         $(function (){
@@ -20,8 +23,6 @@
                 items : ['singlefile','singlevideo', 'singleaudio','singleimg'],
                 height: "1600px",
             });
-
-            //createPagination('pagination', 1, 10, 273, selectPageFunction);
 
             $('#pagination').pagination({
                 totalNumber: 127,
@@ -88,18 +89,17 @@
             $('#messageDialog #cancelActionBtn').click(function(){$('#messageDialog').css('display','none');$('#confirmDialog').css('display','none'); return false;});
         }
 
-        function alertShow(){
-            $('#messageDialog').trigger('alertShow');
-        }
-
-        function confirmShow(){
-            alert($('#messageDialog').trigger('confirmShow'));
+        function showThis(){
+            $('#message').myMessager().wait();
         }
     </script>
 </head>
 <body>
-    <div id="pagination" class="pagination" data-options="pageNumber:1, pageSize:10, pageTabSize:5, totalNumber:50"></div>
-    <input type="button" value="Click Me" id="click_me_btn">
+    <div id="pagination"></div>
+
+    <div id="message"></div>
+
+    <input type="button" onclick="showThis();" value="show message alert">
     <!--<input type="button" onclick="alertShow()" value="showAlert">
     <input type="button" onclick="confirmShow()" value="confirmShow">
     <textarea id="testing" name="testing" style="width:100%"></textarea>

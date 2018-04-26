@@ -1,5 +1,5 @@
 
-.window-page-mask{
+.window-myMessage-mask{
 	z-index: 9911;
 	background : #F3F3F3;
     background-color:rgba(0,0,0,0.2);
@@ -10,7 +10,7 @@
 	height: 100%;
 }
 
-.window-page-mask-background{
+.window-myMessage-mask-background{
     background-image: url(loading.gif) ;
 	background-repeat: no-repeat;
 	background-position : center 100px;

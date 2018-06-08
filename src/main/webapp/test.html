@@ -90,8 +90,153 @@
         }
 
         function showThis(){
-            $('#message').myMessager().wait();
+            console.log($('#message').myAppObj.a1());
+            console.log($('#message').myAppObj.a2());
+            console.log($('#message').myAppObj.a3);
+            console.log($('#message').myAppFun().a1());
+            console.log($('#message').myAppFun().a2());
+            console.log($('#message').myAppFun().a3);
+            console.log($('#message').a1());
+            console.log($('#message').a2());
+            console.log($('#message').a3);
+
+            console.log($('#message').myAppObj.a5());
+            console.log($('#message').myAppObj.a5());
+            console.log($('#message').myAppObj.a5());
+            console.log($('#message').myAppFun().a5());
+            console.log($('#message').myAppFun().a5());
+            console.log($('#message').myAppFun().a5());
+            console.log($('#message').a5());
+            console.log($('#message').a5());
+            console.log($('#message').a5());
+
+            console.log('-----------------------------------------');
+
+            var o1 = $('#message');
+            var o2 = $('#message');
+            console.log(o1 === o2);
+
+            console.log(o1.myAppFun);
+            console.log(o1.myAppFun());
+            console.log(o1.myAppFunRun);
+
+            console.log(o1.myAppObj === o2.myAppObj);
+            console.log(o1.myAppObj === $.fn.myAppObj);
+            console.log(o2.myAppObj === $.fn.myAppObj);
+
+            console.log(o1.myAppFun === o2.myAppFun);
+            console.log(o1.myAppFun === $.fn.myAppFun);
+            console.log(o2.myAppFun === $.fn.myAppFun);
+
+            console.log(o1.myAppFun() === o2.myAppFun());
+            console.log(o1.myAppFun() === $.fn.myAppFun());
+            console.log(o2.myAppFun() === $.fn.myAppFun());
+            console.log(o2.myAppFun() === o2.myAppFun());
+
+            console.log(o1.myAppFunRun === o2.myAppFunRun);
+            console.log(o1.myAppFunRun === $.fn.myAppFunRun);
+            console.log(o2.myAppFunRun === $.fn.myAppFunRun);
+
+
+            var u = o1.myAppFun();
+            console.log(u.a5());
+            console.log(u.a5());
+
+            console.log('-----------------------------------------');
+
+            console.log($('#message').aa1());
+            console.log($('#message').aa2());
+            console.log($('#message').aa3);
+            console.log($('#message').aa4);
+            console.log($('#message').aa5());
+            console.log($('#message').aa5());
+
+            console.log('-----------------------------------------');
+
+            console.log($('#message').MyAppConstructor.aa1());
+            console.log($('#message').MyAppConstructor.aa2());
+            console.log($('#message').MyAppConstructor.aa3);
+            console.log($('#message').MyAppConstructor.aa4);
+            console.log($('#message').MyAppConstructor.aa5());
+            console.log($('#message').MyAppConstructor.aa5());
+
+            console.log('-----------------------------------------');
+
+            $('#message').myAppProtoTypeAccess();
         }
+
+        (function($){
+            var myAppObj = {
+
+                a1 : function () { return 'obj app: a1 fun'; },
+
+                a2 : function () { return "obj app: a2 fun" + this.a1(); },
+
+                a3 : 'obj app: a3 obj',
+
+                a4 : 5,
+
+                a5 : function () { this.a4++; return this.a4 ; }
+            };
+
+            var myAppFun = function() {
+                return {
+                    a1 : function () { return 'function app: a1 fun'; },
+
+                    a2 : function () { return "function app: a2 fun" + this.a1(); },
+
+                    a3 : 'function app: a3 obj',
+
+                    a4 : 66,
+
+                    a5 : function () { this.a4++; return this.a4 ; }
+                }
+            };
+
+            var MyAppConstructor = function() {};
+            MyAppConstructor.prototype = {
+
+                aa1 : function () { return 'obj app: aa1 fun'; },
+
+                aa2 : function () { return "obj app: aa2 fun" + this.aa1(); },
+
+                aa3 : 'obj app: aa3 obj',
+
+                aa4 : 5,
+
+                aa5 : function () { this.aa4++; return this.aa4 ; }
+
+            };
+
+            var myAppProtoTypeAccess = function () {};
+            myAppProtoTypeAccess.prototype = { a1: function () {}};
+
+            var MyAppProtoTypeAccess = function() {
+                //return {
+                    //a1: function () { console.log('this is MyAppProtoTypeAccess a1'); }
+                //}
+            };
+            MyAppProtoTypeAccess.prototype = {
+                a1 : function () { console.log('this is MyAppProtoTypeAccess a1 of prototype'); }
+            };
+
+            $.fn.extend(myAppObj);
+            $.fn.myAppObj = myAppObj;
+            $.fn.myAppFun = myAppFun;
+            $.fn.myAppFunRun = myAppFun();
+
+            $.fn.myAppObjReturn = function() { return myAppObj; };
+            $.fn.myAppFunReturn = function() { return new myAppFun(); }
+
+            $.fn.extend(MyAppConstructor.prototype);
+            $.fn.MyAppConstructor = new MyAppConstructor();
+
+            $.fn.myAppProtoTypeAccess = function (){
+            var l = new myAppProtoTypeAccess();
+            var t = new MyAppProtoTypeAccess();
+            t.a1(); };
+
+        })(jQuery);
     </script>
 </head>
 <body>

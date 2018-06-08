@@ -44,6 +44,8 @@ function callAjax(url, iTarget, iCallBack, iCallBackParam, iPost, iParams, iLoad
     });
 }
 
+var globalPageSize = 10;
+
 var user;
 function checkUser() {
     if (Cookies.get("user")) {

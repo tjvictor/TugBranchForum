@@ -70,12 +70,10 @@ function getTopicCountByCategory(title, categoryId){
 }
 function getTopicCountByCategoryCallback(data){
     if(data.status == "ok"){
-        if(data.callBackData>0){
-            createPagination('pagination', 1, globalPageSize, data.callBackData, topicPaginationChange);
-            $('#pagination').css('display','block');
-        }
-        else
-            $('#pagination').css('display','none');
+        $('#indexPagination').pagination({
+            totalNumber: data.callBackData,
+            onSelectPage: topicPaginationChange,
+        });
     }
 }
 
